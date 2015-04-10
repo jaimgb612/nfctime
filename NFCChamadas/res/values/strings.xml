@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NFC Chamadas</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="screen_login_label_login">Login:</string>
+    <string name="title_activity_logado">LogadoActivity</string>
+    <string name="title_activity_cadastrar_usuario">CadastrarUsuarioActivity</string>
+    <string name="cadastrar_usuario_label_nome">Nome</string>
+    <string name="cadastrar_usuario_label_cadastrar_usuario">Cadastrar Usuário</string>
+    <string name="cadastrar_usuario_label_email">E-mail</string>
+    <string name="cadastrar_usuario_label_registro_academico">Registro acadêmico</string>
+    <string name="cadastrar_usuario_label_senha">Senha</string>
+    <string name="cadastrar_usuario_label_confirma_senha">Confirma senha</string>
+    <string name="cadastrar_usuario_label_tipo_pessoa">Tipo de pessoa</string>
+    <string name="falha_na_conexao_com_servidor">Falha na conexão com o servidor!</string>
+    <string name="falha_ao_cadastrar_usuario">Falha na conexão com o servidor para cadastrar usuario!</string>
+    <string name="falha_ao_fazer_login">Falha na conexão com o servidor para fazer login!</string>
+    <string name="cadastrar_usuario_validar_insira_nome">Insira um nome</string>
+    <string name="cadastrar_usuario_validar_insira_email_valido">Insira um e-mail válido</string>
+    <string name="cadastrar_usuario_validar_insira_registro_academico">Insira um número de registro acadêmico</string>
+    <string name="cadastrar_usuario_validar_insira_senha">Insira uma senha</string>
+    <string name="cadastrar_usuario_validar_confirma_senha_nao_coincide">Confirma senha não coincide com a senha</string>
+    <string name="cadastrar_usuario_validar_selecione_tipo_pessoa">Selecione um tipo de pessoa</string>
+    <string name="fazer_login_hint_racademico_ou_email">Reg. Acadêmico ou E-mail</string>
+    <string name="fazer_login_hint_senha">Senha</string>
+    <string name="fazer_login_text_button_login">Login</string>
+    <string name="fazer_login_text_button_cadastrese">Cadastre-se</string>
+    <string name="usuario_ou_senha_incorretos">Usuário ou senha incorretos!</string>
+
+</resources>

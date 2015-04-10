@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LoginActivity" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/screen_login_label_login"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/etRAcademicoOuEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/fazer_login_hint_racademico_ou_email" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/etSenhaLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/fazer_login_hint_senha"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/bLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fazer_login_text_button_login" />
+
+    <Button
+        android:id="@+id/bCadastreSe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fazer_login_text_button_cadastrese" />
+
+</LinearLayout>

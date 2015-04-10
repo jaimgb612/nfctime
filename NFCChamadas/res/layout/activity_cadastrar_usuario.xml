@@ -1,0 +1,138 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CadastrarUsuarioActivity" >
+    
+    <LinearLayout
+        android:id="@+id/layButtonsCancelOk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="?android:attr/buttonBarStyle" >
+        
+        <Button
+            android:id="@+id/bCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@android:string/cancel"
+            android:layout_weight="0.5"
+            style="?android:attr/buttonBarButtonStyle" />
+        
+        <Button
+            android:id="@+id/bOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@android:string/ok"
+            android:layout_weight="0.5"
+            style="?android:attr/buttonBarButtonStyle" />
+        
+    </LinearLayout>
+    
+    <ScrollView
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_alignParentBottom="true"
+	    android:layout_below="@id/layButtonsCancelOk" >
+	
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" >
+		
+		    <TextView
+		        android:id="@+id/textView1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_horizontal"
+		        android:text="@string/cadastrar_usuario_label_cadastrar_usuario"
+		        android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+		    <TextView
+		        android:id="@+id/textView2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/cadastrar_usuario_label_nome" />
+		
+		    <EditText
+		        android:id="@+id/etNome"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10" >
+		
+		        <requestFocus />
+		    </EditText>
+		
+		    <TextView
+		        android:id="@+id/textView3"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/cadastrar_usuario_label_email"
+		        android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+		    <EditText
+		        android:id="@+id/etEmail"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:inputType="textEmailAddress" />
+		
+		    <TextView
+		        android:id="@+id/textView4"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/cadastrar_usuario_label_registro_academico"
+		        android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+		    <EditText
+		        android:id="@+id/etRAcademico"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:inputType="number" />
+		
+		    <TextView
+		        android:id="@+id/textView5"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/cadastrar_usuario_label_senha"
+		        android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+		    <EditText
+		        android:id="@+id/etSenha"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:inputType="textPassword" />
+		
+		    <TextView
+		        android:id="@+id/textView6"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/cadastrar_usuario_label_confirma_senha"
+		        android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+		    <EditText
+		        android:id="@+id/etConfirmaSenha"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:inputType="textPassword" />
+		
+		    <TextView
+		        android:id="@+id/textView7"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/cadastrar_usuario_label_tipo_pessoa"
+		        android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+		    <Spinner
+		        android:id="@+id/spnTipoPessoa"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" />
+		
+		</LinearLayout>
+	
+	</ScrollView>
+
+</RelativeLayout>
