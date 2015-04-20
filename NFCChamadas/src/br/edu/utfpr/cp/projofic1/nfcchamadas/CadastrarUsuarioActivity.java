@@ -1,6 +1,7 @@
 package br.edu.utfpr.cp.projofic1.nfcchamadas;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.mail.internet.AddressException;
@@ -49,46 +50,58 @@ public class CadastrarUsuarioActivity extends Activity {
 		bCancel = (Button) findViewById(R.id.bCancel);
 		bOk = (Button) findViewById(R.id.bOk);
 		
-		final ProgressDialog progDial = ProgressDialog.show(this, "", "");
-		progDial.setCancelable(false);
-		new AsyncTask<Void, Void, Void>() {
-			
-			private List<TipoPessoa> tiposPessoa;
-			private SQLException sqlException;
-			
-			@Override
-			protected Void doInBackground(Void... params) {
-				try {
-					// Tentando se conectar ao servidor de Banco de Dados
-					dbDAO = new DatabaseDAO();
-					
-					// Recuperando a lista de tipos de pessoa
-					tiposPessoa = dbDAO.getTiposPessoa();
-					
-				} catch (SQLException e) {
-					// Caso houve um problema na operação no Banco de dados
-					sqlException = e;
-				}
-				return null;
-			}
-			
-			@Override
-			protected void onPostExecute(Void result) {
-				progDial.cancel();
-				
-				if (sqlException != null) {
-					// Caso houve um problema na operação no Banco de dados
-					Log.e("Conexão com o Banco de Dados no servidor", "Falha ao se conectar", sqlException);
-					Toast.makeText(CadastrarUsuarioActivity.this, R.string.falha_na_conexao_com_servidor, Toast.LENGTH_SHORT).show();
-					finish();
-					
-				} else {
-					// Criando o adapter do Spinner
-					TiposPessoaSpinnerAdapter adapter = new TiposPessoaSpinnerAdapter(CadastrarUsuarioActivity.this, tiposPessoa);
-					spnTipoPessoa.setAdapter(adapter);
-				}
-			}
-		}.execute();
+//		final ProgressDialog progDial = ProgressDialog.show(this, "", "");
+//		progDial.setCancelable(false);
+		
+		// Preenchendo o Spinner de tipos de pessoa
+		List<TipoPessoa> tiposPessoa = new ArrayList<TipoPessoa>();
+		TipoPessoa tipoPessoa = new TipoPessoa();
+		tipoPessoa.setId(1);
+		tipoPessoa.setNome("Professor");
+		tiposPessoa.add(tipoPessoa);
+		tipoPessoa = new TipoPessoa();
+		tipoPessoa.setId(2);
+		tipoPessoa.setNome("Aluno");
+		tiposPessoa.add(tipoPessoa);
+		spnTipoPessoa.setAdapter(new TiposPessoaSpinnerAdapter(this, tiposPessoa));
+//		new AsyncTask<Void, Void, Void>() {
+//			
+//			private List<TipoPessoa> tiposPessoa;
+//			private SQLException sqlException;
+//			
+//			@Override
+//			protected Void doInBackground(Void... params) {
+//				try {
+//					// Tentando se conectar ao servidor de Banco de Dados
+//					dbDAO = new DatabaseDAO();
+//					
+//					// Recuperando a lista de tipos de pessoa
+//					tiposPessoa = dbDAO.getTiposPessoa();
+//					
+//				} catch (SQLException e) {
+//					// Caso houve um problema na operação no Banco de dados
+//					sqlException = e;
+//				}
+//				return null;
+//			}
+//			
+//			@Override
+//			protected void onPostExecute(Void result) {
+//				progDial.cancel();
+//				
+//				if (sqlException != null) {
+//					// Caso houve um problema na operação no Banco de dados
+//					Log.e("Conexão com o Banco de Dados no servidor", "Falha ao se conectar", sqlException);
+//					Toast.makeText(CadastrarUsuarioActivity.this, R.string.falha_na_conexao_com_servidor, Toast.LENGTH_SHORT).show();
+//					finish();
+//					
+//				} else {
+//					// Criando o adapter do Spinner
+//					TiposPessoaSpinnerAdapter adapter = new TiposPessoaSpinnerAdapter(CadastrarUsuarioActivity.this, tiposPessoa);
+//					spnTipoPessoa.setAdapter(adapter);
+//				}
+//			}
+//		}.execute();
 		
 		// Criando os eventos dos botões
 		bCancel.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +141,7 @@ public class CadastrarUsuarioActivity extends Activity {
 					try {
 						dbDAO.cadastrarPessoa(pessoa);
 					} catch (SQLException e) {
+						// Caso houve um problema ao cadastrar a pessoa na Base de Dados no servidor
 						Log.e("Conexão com o Banco de dados no servidor", "Falha ao cadastrar pessoa no Banco", e);
 						return getResources().getString(R.string.falha_ao_cadastrar_usuario);
 					}
