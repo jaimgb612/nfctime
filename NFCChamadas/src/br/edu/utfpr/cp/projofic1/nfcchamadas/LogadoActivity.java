@@ -3,6 +3,8 @@ package br.edu.utfpr.cp.projofic1.nfcchamadas;
 import java.sql.SQLException;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,17 +40,24 @@ public class LogadoActivity extends Activity {
 			@Override
 			protected void onPostExecute(SQLException result) {
 				if (result != null) {
-					// Se houve um problema na comunicação com o Banco de dados
-					Log.e("Conexão com o servidor de Banco de Dados", "Falha na operação ou conexão", result);
+					// Se houve um problema na comunicaï¿½ï¿½o com o Banco de dados
+					Log.e("Conexï¿½o com o servidor de Banco de Dados", "Falha na operaï¿½ï¿½o ou conexï¿½o", result);
 					Toast.makeText(LogadoActivity.this, R.string.falha_na_conexao_com_servidor, Toast.LENGTH_SHORT).show();
 					finish();
 				} else {
 					// Mostrando os dados da pessoa logada
-					TextView tvDadosPessoa = (TextView) findViewById(R.id.tvDadosUsuario);
+					
+
+					Intent i = new Intent(LogadoActivity.this, NFCActivity.class);
+				//	i.putExtra("pessoa", pessoaLogada);
+					startActivity(i); 
+			//		TextView tvDadosPessoa = (TextView) findViewById(R.id.tvDadosUsuario);
+					/*
 					tvDadosPessoa.setText(
 							"Nome: " + pessoaLogada.getNome() + "\n" +
 							"E-mail: " + pessoaLogada.getEmail() + "\n" +
-							"Reg. Acadêmico: " + pessoaLogada.getrAcademico());
+							"Reg. Acadï¿½mico: " + pessoaLogada.getrAcademico());
+					*/
 				}
 			}
 		}.execute();

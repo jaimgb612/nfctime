@@ -1,6 +1,8 @@
 package br.edu.utfpr.cp.projofic1.nfcchamadas.database;
 
-public class Pessoa {
+import java.io.Serializable;
+
+public class Pessoa implements Serializable{
 	
 	private long id, idTipoPessoa;
 	private String nome, email, senha, rAcademico;
