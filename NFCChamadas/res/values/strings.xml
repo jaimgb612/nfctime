@@ -32,5 +32,12 @@
     <string name="title_activity_nfc">NFCActivity</string>
     <string name="lbl_nfc">Chamada NFC</string>
     <string name="lbl_teste">teste</string>
+    <string name="lbl_salvar">Confirmar</string>
+    <string name="lbl_tagLida">Tag :</string>
+    <string name="lbl_Lista_presentes">Lista de presentes</string>
+    <string name="title_activity_inicializa">NFCChamadas</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_inicial">InicialActivity</string>
 
 </resources>

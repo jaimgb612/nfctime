@@ -17,11 +17,42 @@
         android:layout_height="wrap_content"
         android:text="@string/lbl_nfc" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/txtTeste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/lbl_tagLida" />
+
+        <ListView
+            android:id="@+id/lstVPresente"
+            android:layout_width="214dp"
+            android:layout_height="49dp"
+            android:layout_weight="1" >
+        </ListView>
+    </LinearLayout>
+
     <TextView
-        android:id="@+id/txtTeste"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:text="@string/lbl_teste" />
+        android:text="@string/lbl_Lista_presentes"
+        android:textSize="@dimen/Lista" />
+
+    <ListView
+        android:id="@+id/listPresentes"
+        android:layout_width="match_parent"
+        android:layout_height="286dp" >
+    </ListView>
+
+    <Button
+        android:id="@+id/btnSalvar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_salvar" />
 
 </LinearLayout>

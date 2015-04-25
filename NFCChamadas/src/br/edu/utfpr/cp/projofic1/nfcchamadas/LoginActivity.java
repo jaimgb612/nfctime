@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.DatabaseDAO;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +35,13 @@ public class LoginActivity extends Activity {
         bLogin = (Button) findViewById(R.id.bLogin);
         bCadastreSe = (Button) findViewById(R.id.bCadastreSe);
         
-        // Criando os eventos dos botões
+        //Criando preference para verificar se jÃ¡ estÃ¡ logado 
+        SharedPreferences preferences= getSharedPreferences("logado", Context.MODE_PRIVATE);
+        
+        if(preferences.getBoolean("status", true)){
+
+        
+        // Criando os eventos dos botï¿½es
         bLogin.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -46,6 +54,10 @@ public class LoginActivity extends Activity {
 				startActivityForResult(new Intent(LoginActivity.this, CadastrarUsuarioActivity.class), REQUEST_CADASTRAR_USUARIO);
 			}
 		});
+        }else{
+        	startActivityForResult(new Intent(LoginActivity.this, CadastrarUsuarioActivity.class), REQUEST_CADASTRAR_USUARIO);
+        	
+        }
     }
     
     
@@ -60,22 +72,22 @@ public class LoginActivity extends Activity {
     			DatabaseDAO dbDAO = null;
     			
     			try {
-    				// Fazendo o login do usuário, recuperando o ID no banco de dados
+    				// Fazendo o login do usuï¿½rio, recuperando o ID no banco de dados
     				dbDAO = new DatabaseDAO();
     				Long pessoaId = dbDAO.loginUsuario(RAcademicoOuEmail, senha);
     				return pessoaId;
     				
     			} catch (SQLException e) {
-    				// Caso haja algum problema ao fazer a operação no banco
+    				// Caso haja algum problema ao fazer a operaï¿½ï¿½o no banco
     				return e;
     				
     			} finally {
-    				// Deve SEMPRE fechar a conexão com o banco de dados
+    				// Deve SEMPRE fechar a conexï¿½o com o banco de dados
     				try {
     					if (dbDAO != null)
     						dbDAO.close();
     				} catch (SQLException e) {
-    					Log.e("Conexão com o Banco de Dados com o servidor", "Falha ao fechar a conexão", e);
+    					Log.e("Conexï¿½o com o Banco de Dados com o servidor", "Falha ao fechar a conexï¿½o", e);
     				}
     			}
     		}
@@ -85,19 +97,19 @@ public class LoginActivity extends Activity {
     			progDial.cancel();
     			
     			if (result instanceof SQLException) {
-    				// Caso houve um problema na operação com o Banco de dados
-    				Log.e("Conexão com o Banco de dados no servidor", "Falha ao fazer login", (SQLException) result);
+    				// Caso houve um problema na operaï¿½ï¿½o com o Banco de dados
+    				Log.e("Conexï¿½o com o Banco de dados no servidor", "Falha ao fazer login", (SQLException) result);
     				Toast.makeText(LoginActivity.this, R.string.falha_ao_fazer_login, Toast.LENGTH_SHORT).show();
     				
     			} else if (result instanceof Long) {
-    				// Caso exista um usuário com esta senha
+    				// Caso exista um usuï¿½rio com esta senha
     				Long pessoaId = (Long) result;
     				Intent i = new Intent(LoginActivity.this, LogadoActivity.class);
     				i.putExtra(LogadoActivity.EXTRA_PESSOA_ID, pessoaId);
     				startActivity(i);
-    				
+    				LoginActivity.this.finish();
     			} else {
-					// Caso não exista um usuário com esta senha
+					// Caso nï¿½o exista um usuï¿½rio com esta senha
 					Toast.makeText(LoginActivity.this, R.string.usuario_ou_senha_incorretos, Toast.LENGTH_SHORT).show();
 				}
     		}

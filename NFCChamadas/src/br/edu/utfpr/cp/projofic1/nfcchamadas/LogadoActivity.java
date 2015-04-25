@@ -3,7 +3,10 @@ package br.edu.utfpr.cp.projofic1.nfcchamadas;
 import java.sql.SQLException;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,11 +14,13 @@ import android.widget.Toast;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.DatabaseDAO;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.Pessoa;
 
+
 public class LogadoActivity extends Activity {
 	
 	public static final String EXTRA_PESSOA_ID = "pessoa_id";
 	
 	private Pessoa pessoaLogada;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,14 @@ public class LogadoActivity extends Activity {
 					Toast.makeText(LogadoActivity.this, R.string.falha_na_conexao_com_servidor, Toast.LENGTH_SHORT).show();
 					finish();
 				} else {
+					
+					//altera preference para logado
+					SharedPreferences preferences= getSharedPreferences("logado", Context.MODE_PRIVATE);
+					
+					Editor editor = preferences.edit();
+					editor.putBoolean("status", false);
+					editor.commit();
+
 					// Mostrando os dados da pessoa logada
 					
 
