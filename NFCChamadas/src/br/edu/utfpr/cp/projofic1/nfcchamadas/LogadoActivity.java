@@ -88,7 +88,7 @@ public class LogadoActivity extends Activity {
 		
 		switch (item.getItemId()) {
         case R.id.action_settings:
-           // openSearch();
+            openCaptura();
             return true;
         case R.id.item1:
             logout();
@@ -96,6 +96,13 @@ public class LogadoActivity extends Activity {
         default:
             return super.onOptionsItemSelected(item);
     }
+	}
+   
+	//Só para teste !!!!!
+	private void openCaptura() {
+		Intent i = new Intent(LogadoActivity.this, NFCActivity.class);
+		startActivity(i);
+		
 	}
 
 	private void logout() {
