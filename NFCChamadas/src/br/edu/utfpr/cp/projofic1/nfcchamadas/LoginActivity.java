@@ -1,15 +1,20 @@
 package br.edu.utfpr.cp.projofic1.nfcchamadas;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.DatabaseDAO;
+import br.edu.utfpr.cp.projofic1.nfcchamadas.database.Pessoa;
+import br.edu.utfpr.cp.projofic1.nfcchamadas.util.ObjectSerializer;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +27,7 @@ public class LoginActivity extends Activity {
 	
 	private EditText etRAcademicoOuEmail, etSenha;
 	private Button bLogin, bCadastreSe;
+	private DatabaseDAO dbDAO = null;
 	
 
     @Override
@@ -35,11 +41,6 @@ public class LoginActivity extends Activity {
         bLogin = (Button) findViewById(R.id.bLogin);
         bCadastreSe = (Button) findViewById(R.id.bCadastreSe);
         
-        //Criando preference para verificar se já está logado 
-        SharedPreferences preferences= getSharedPreferences("logado", Context.MODE_PRIVATE);
-        
-        if(preferences.getBoolean("status", true)){
-
         
         // Criando os eventos dos bot�es
         bLogin.setOnClickListener(new View.OnClickListener() {
@@ -54,10 +55,7 @@ public class LoginActivity extends Activity {
 				startActivityForResult(new Intent(LoginActivity.this, CadastrarUsuarioActivity.class), REQUEST_CADASTRAR_USUARIO);
 			}
 		});
-        }else{
-        	startActivityForResult(new Intent(LoginActivity.this, CadastrarUsuarioActivity.class), REQUEST_CADASTRAR_USUARIO);
-        	
-        }
+       
     }
     
     
@@ -69,13 +67,13 @@ public class LoginActivity extends Activity {
     		
     		@Override
     		protected Object doInBackground(Void... params) {
-    			DatabaseDAO dbDAO = null;
+    			
     			
     			try {
     				// Fazendo o login do usu�rio, recuperando o ID no banco de dados
     				dbDAO = new DatabaseDAO();
-    				Long pessoaId = dbDAO.loginUsuario(RAcademicoOuEmail, senha);
-    				return pessoaId;
+    				Pessoa pessoa = dbDAO.loginUsuario(RAcademicoOuEmail, senha);
+    				return pessoa;
     				
     			} catch (SQLException e) {
     				// Caso haja algum problema ao fazer a opera��o no banco
@@ -101,11 +99,27 @@ public class LoginActivity extends Activity {
     				Log.e("Conex�o com o Banco de dados no servidor", "Falha ao fazer login", (SQLException) result);
     				Toast.makeText(LoginActivity.this, R.string.falha_ao_fazer_login, Toast.LENGTH_SHORT).show();
     				
-    			} else if (result instanceof Long) {
+    			} else if (result instanceof Pessoa) {
     				// Caso exista um usu�rio com esta senha
-    				Long pessoaId = (Long) result;
+    				Pessoa pessoaLogada = (Pessoa) result;
+    				 
+    				 SharedPreferences preferences= getSharedPreferences("sessaoPessoa", Context.MODE_PRIVATE);
+    				
+    				 Editor editor = preferences.edit();
+    				 
+    				 try {
+						editor.putString("pessoaLogada", ObjectSerializer.serialize(pessoaLogada));
+					
+    				 
+    				 
+    				 } catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+    				 editor.commit();
+    				 
     				Intent i = new Intent(LoginActivity.this, LogadoActivity.class);
-    				i.putExtra(LogadoActivity.EXTRA_PESSOA_ID, pessoaId);
+    				Toast.makeText(LoginActivity.this, pessoaLogada.getNome(), Toast.LENGTH_SHORT).show();
     				startActivity(i);
     				LoginActivity.this.finish();
     			} else {

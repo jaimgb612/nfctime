@@ -57,24 +57,36 @@ public class DatabaseDAO {
 	/**
 	 * @param emailRegAcademico
 	 * @param senha
-	 * @return Caso haja usuário ou senha inválida, retornará <code>null</code>
+	 * @return Caso haja usuï¿½rio ou senha invï¿½lida, retornarï¿½ <code>null</code>
 	 */
-	public Long loginUsuario(String emailRegAcademico, String senha) throws SQLException {
-		// Verificando por registro acadêmico
-		// Pesquisando se existe um registro de matrícula com este usuário e senha cadastrado
+	public Pessoa loginUsuario(String emailRegAcademico, String senha) throws SQLException {
+		// Verificando por registro acadï¿½mico
+		// Pesquisando se existe um registro de matrï¿½cula com este usuï¿½rio e senha cadastrado
 		PreparedStatement stmt = dbConnection.prepareStatement(
-				"SELECT id_pessoa FROM pessoa WHERE r_matricula = ? AND senha = ?");
+				"SELECT * FROM pessoa WHERE r_matricula = ? AND senha = ?");
 		stmt.setString(1, emailRegAcademico);
 		stmt.setString(2, senha);
 		ResultSet result = stmt.executeQuery();
+		Pessoa pessoa = null;
+		
 		if (result.next()) {
 			// Se existir, fecha a query do banco e retuorna o ID da pessoa para ser feito o login
-			Long id = result.getLong("id_pessoa");
+					
+			pessoa = new Pessoa();
+			pessoa.setId(result.getLong("id_pessoa"));
+			pessoa.setNome(result.getString("nome"));
+			pessoa.setEmail(result.getString("email"));
+			pessoa.setSenha(result.getString("senha"));
+			pessoa.setrAcademico(result.getString("r_matricula"));
+			pessoa.setIdTipoPessoa(result.getLong("id_tipo_pessoa"));
+			
+			
 			result.close();
 			stmt.close();
-			return id;
+			
+			
 		}
-		// Se não exisir, só fecha a query do banco de dados e vai para a verificação por e-mail
+		// Se nï¿½o exisir, sï¿½ fecha a query do banco de dados e vai para a verificaï¿½ï¿½o por e-mail
 		result.close();
 		stmt.close();
 		
@@ -84,25 +96,34 @@ public class DatabaseDAO {
 			InternetAddress netAddr = new InternetAddress(emailRegAcademico);
 			netAddr.validate();
 			
-			// Pesquisando se existe um e-mail com este usuário e senha cadastrado
+			// Pesquisando se existe um e-mail com este usuï¿½rio e senha cadastrado
 			stmt = dbConnection.prepareStatement(
-					"SELECT id_pessoa FROM pessoa WHERE email = ? AND senha = ?");
+					"SELECT * FROM pessoa WHERE email = ? AND senha = ?");
 			stmt.setString(1, emailRegAcademico);
 			stmt.setString(2, senha);
 			result = stmt.executeQuery();
-			Long id;
+		
 			if (result.next()) {
 				// Se existir, retorna o ID da pessoa para ser feito o login
-				id = result.getLong("id_pessoa");
+				
+				pessoa = new Pessoa();
+				pessoa.setId(result.getLong("id_pessoa"));
+				pessoa.setNome(result.getString("nome"));
+				pessoa.setEmail(result.getString("email"));
+				pessoa.setSenha(result.getString("senha"));
+				pessoa.setrAcademico(result.getString("r_matricula"));
+				pessoa.setIdTipoPessoa(result.getLong("id_tipo_pessoa"));
+				result.close();
+				stmt.close();
+				
 			} else {
-				// Se não existir, retorna null
-				id = null;
+				// Se nï¿½o existir, retorna null
+				return null;
 			}
-			
+			return pessoa;
 			// Fechando a query do banco de dados e retornando o resultado
-			result.close();
-			stmt.close();
-			return id;
+		
+			
 		} catch(AddressException e) {
 			return null;
 		}
@@ -123,7 +144,7 @@ public class DatabaseDAO {
 	
 	/**
 	 * @param id
-	 * @return Se não tiver uma pessoa com esse ID, retornará <code>null</code>
+	 * @return Se nï¿½o tiver uma pessoa com esse ID, retornarï¿½ <code>null</code>
 	 * @throws SQLException
 	 */
 	public Pessoa getPessoaById(long id) throws SQLException {
