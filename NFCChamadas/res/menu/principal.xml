@@ -7,5 +7,7 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
+    <item android:id="@+id/item1" android:title="@string/lbl_sair"></item>
+    <item android:id="@+id/item2" android:title="@string/lbl_AlteraData"></item>
 
 </menu>
