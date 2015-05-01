@@ -109,19 +109,17 @@ public class LoginActivity extends Activity {
     				 
     				 try {
 						editor.putString("pessoaLogada", ObjectSerializer.serialize(pessoaLogada));
-					
-    				 
-    				 
+						editor.commit();
+						
+						Intent i = new Intent(LoginActivity.this, LogadoActivity.class);
+						Toast.makeText(LoginActivity.this, pessoaLogada.getNome(), Toast.LENGTH_SHORT).show();
+						startActivity(i);
+						LoginActivity.this.finish();
     				 } catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+    					 Toast.makeText(LoginActivity.this, R.string.falha_ao_fazer_login_2, Toast.LENGTH_SHORT).show();
+    					 Log.e("Login pessoa", "Falha ao logar!", e);
 					}
-    				 editor.commit();
     				 
-    				Intent i = new Intent(LoginActivity.this, LogadoActivity.class);
-    				Toast.makeText(LoginActivity.this, pessoaLogada.getNome(), Toast.LENGTH_SHORT).show();
-    				startActivity(i);
-    				LoginActivity.this.finish();
     			} else {
 					// Caso n�o exista um usu�rio com esta senha
 					Toast.makeText(LoginActivity.this, R.string.usuario_ou_senha_incorretos, Toast.LENGTH_SHORT).show();

@@ -9,6 +9,14 @@
         android:id="@+id/tvDadosUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
         android:text="@string/hello_world" />
+    
+    <ListView android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tvDadosUsuario"
+        android:layout_alignParentLeft="true" />
 
 </RelativeLayout>

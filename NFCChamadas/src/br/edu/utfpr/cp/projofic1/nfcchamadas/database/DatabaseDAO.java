@@ -142,6 +142,7 @@ public class DatabaseDAO {
 		stmt.close();
 	}
 	
+	
 	/**
 	 * @param id
 	 * @return Se n�o tiver uma pessoa com esse ID, retornar� <code>null</code>
@@ -163,5 +164,31 @@ public class DatabaseDAO {
 			return pessoa;
 		}
 		return null;
+	}
+	
+	
+	public List<Evento> getEventosDaPessoa(long pessoaId) throws SQLException {
+		ArrayList<Evento> eventos = new ArrayList<Evento>();
+		
+		// Fazendo a consulta no banco de dados
+		String sql = "SELECT * FROM evento WHERE id_criador_evento = ?";
+		PreparedStatement stmt = dbConnection.prepareStatement(sql);
+		stmt.setString(1, String.valueOf(pessoaId));
+		ResultSet result = stmt.executeQuery();
+		
+		// Preenchendo a lista com os resultados da consulta
+		while (result.next()) {
+			Evento evento = new Evento();
+			evento.setId(result.getLong("id_evento"));
+			evento.setNome(result.getString("nome"));
+			evento.setData(result.getString("data"));
+			evento.setHoraInicio(result.getString("hora_inicio"));
+			evento.setHoraFim(result.getString("hora_fim"));
+			evento.setIdCriadorEvento(result.getString("id_criador_evento"));
+			eventos.add(evento);
+		}
+		
+		// Retornando a lista
+		return eventos;
 	}
 }
