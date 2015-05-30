@@ -1,8 +1,10 @@
 package br.edu.utfpr.cp.projofic1.nfcchamadas.database;
 
 import android.annotation.SuppressLint;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @SuppressLint("SimpleDateFormat")
@@ -11,17 +13,18 @@ public class Evento {
 	public static final String HORA_FORMAT = "HH:mm"; // Baseado em 24 horas
 	public static final String DATA_FORMAT = "dd/MM/yyyy";
 	
-	private long id;
-	private String nome, data;
+	private int id;
+	private String nome;
+	private Date data;
 	private String horaInicio, horaFim, idCriadorEvento;
+	private boolean gravado;
 	
-	
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 	
 	
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	
@@ -36,18 +39,13 @@ public class Evento {
 	}
 	
 	
-	public String getData() {
+	public Date getData() {
 		return data;
 	}
 	
 	
-	public void setData(String data) throws IllegalArgumentException {
+	public void setData(Date data) throws IllegalArgumentException {
 		// Primeiramente validando o formato da data
-		try {
-			new SimpleDateFormat(DATA_FORMAT).parse(data);
-		} catch (ParseException e) {
-			throw new IllegalArgumentException("Formato de data errado", e);
-		}
 		
 		this.data = data;
 	}
@@ -59,7 +57,7 @@ public class Evento {
 	
 	
 	public void setHoraInicio(String horaInicio) throws IllegalArgumentException {
-		validateHora(horaInicio);
+	
 		this.horaInicio = horaInicio;
 	}
 	
@@ -70,7 +68,7 @@ public class Evento {
 	
 	
 	public void setHoraFim(String horaFim) throws IllegalArgumentException {
-		validateHora(horaFim);
+		
 		this.horaFim = horaFim;
 	}
 	
@@ -86,10 +84,22 @@ public class Evento {
 	
 	
 	private void validateHora(String hora) throws IllegalArgumentException {
-		try {
-			new SimpleDateFormat(HORA_FORMAT).parse(hora);
-		} catch (ParseException e) {
-			throw new IllegalArgumentException("Formato de hora errado", e);
-		}
+		
+	}
+
+
+	public boolean getGravado() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean isGravado() {
+		return gravado;
+	}
+
+
+	public void setGravado(boolean gravado) {
+		this.gravado = gravado;
 	}
 }

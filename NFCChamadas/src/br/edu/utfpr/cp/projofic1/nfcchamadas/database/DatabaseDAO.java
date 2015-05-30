@@ -1,5 +1,7 @@
 package br.edu.utfpr.cp.projofic1.nfcchamadas.database;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +11,10 @@ import java.util.List;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+
+import br.edu.utfpr.cp.projofic1.nfcchamadas.LoginActivity;
+import android.util.Log;
+import android.widget.Toast;
 
 
 public class DatabaseDAO {
@@ -58,14 +64,36 @@ public class DatabaseDAO {
 	 * @param emailRegAcademico
 	 * @param senha
 	 * @return Caso haja usu�rio ou senha inv�lida, retornar� <code>null</code>
+	 * @throws NoSuchAlgorithmException 
 	 */
 	public Pessoa loginUsuario(String emailRegAcademico, String senha) throws SQLException {
 		// Verificando por registro acad�mico
 		// Pesquisando se existe um registro de matr�cula com este usu�rio e senha cadastrado
 		PreparedStatement stmt = dbConnection.prepareStatement(
 				"SELECT * FROM pessoa WHERE r_matricula = ? AND senha = ?");
+		/*
+		//Criptografia
+		String hash;
+		MessageDigest crip;
+		try {
+	
+		crip = MessageDigest.getInstance("SHA-256");
+	
+		crip.update(senha.getBytes());
+		
+		byte[] shaDig = crip.digest();
+		
+		hash = new String(bytesToHex(shaDig));
+		
+		Log.i("Eamorr", "result is " + hash);
+	
+		*/
+		
 		stmt.setString(1, emailRegAcademico);
 		stmt.setString(2, senha);
+		
+		
+		
 		ResultSet result = stmt.executeQuery();
 		Pessoa pessoa = null;
 		
@@ -100,9 +128,26 @@ public class DatabaseDAO {
 			stmt = dbConnection.prepareStatement(
 					"SELECT * FROM pessoa WHERE email = ? AND senha = ?");
 			stmt.setString(1, emailRegAcademico);
-			stmt.setString(2, senha);
-			result = stmt.executeQuery();
+	/*		
+			//Criptografia
+			try {
 		
+			crip = MessageDigest.getInstance("SHA-256");
+		
+			crip.update(senha.getBytes());
+			
+			byte[] shaDig = crip.digest();
+			
+			hash = new String(bytesToHex(shaDig));
+			
+			Log.i("Eamorr", "result is " + hash);
+		
+		*/	
+			stmt.setString(2, senha);
+		
+			result = stmt.executeQuery();
+
+			
 			if (result.next()) {
 				// Se existir, retorna o ID da pessoa para ser feito o login
 				
@@ -135,11 +180,28 @@ public class DatabaseDAO {
 		PreparedStatement stmt = dbConnection.prepareStatement(sql);
 		stmt.setString(1, pessoa.getNome());
 		stmt.setString(2, pessoa.getEmail());
-		stmt.setString(3, pessoa.getSenha());
+		/*
+		//Criptografia
+				String hash;
+				
+				try {
+					 MessageDigest md = MessageDigest.getInstance("SHA-256");
+			
+					  md.update(pessoa.getSenha().getBytes());
+				
+				hash = bytesToHex(md.digest());
+				
+				Log.i("Eamorr", "result is " + hash);
+		//fim criptografia	
+		 * 
+		 */
+	
+		stmt.setString(3,pessoa.getSenha());
 		stmt.setString(4, pessoa.getrAcademico());
 		stmt.setLong(5, pessoa.getIdTipoPessoa());
 		stmt.execute();
 		stmt.close();
+
 	}
 	
 	
@@ -179,9 +241,9 @@ public class DatabaseDAO {
 		// Preenchendo a lista com os resultados da consulta
 		while (result.next()) {
 			Evento evento = new Evento();
-			evento.setId(result.getLong("id_evento"));
+			evento.setId(result.getInt("id_evento"));
 			evento.setNome(result.getString("nome"));
-			evento.setData(result.getString("data"));
+		//	evento.setData(result.getString("data"));
 			evento.setHoraInicio(result.getString("hora_inicio"));
 			evento.setHoraFim(result.getString("hora_fim"));
 			evento.setIdCriadorEvento(result.getString("id_criador_evento"));
@@ -191,4 +253,11 @@ public class DatabaseDAO {
 		// Retornando a lista
 		return eventos;
 	}
+	
+	
+	 public static String bytesToHex(byte[] bytes) {
+	        StringBuffer result = new StringBuffer();
+	        for (byte byt : bytes) result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));
+	        return result.toString();
+	    }
 }

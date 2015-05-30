@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 import br.edu.utfpr.cp.projofic1.nfccahamdas.factory.NDEFRecordFactory;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.model.BaseRecord;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.model.RDTSpRecord;
@@ -60,6 +59,9 @@ public class NFCActivity extends Activity {
 		lView = (ListView) findViewById(R.id.lstVPresente);
 		lPresentes = (ListView) findViewById(R.id.listPresentes);
 		
+		long id_evento = getIntent().getLongExtra("id_evento", 0);
+		
+		Toast.makeText(NFCActivity.this, "Evento "+id_evento, Toast.LENGTH_LONG );
 		
 		if (nfc == null || !(nfc.isEnabled())) {
             // Stop here, we definitely need NFC
@@ -230,7 +232,13 @@ public class NFCActivity extends Activity {
 	          
 	             recContentTxT.setText(record.toString());
 	             
-	             presentes.add(record.payload);
+	             String[] teste = record.toString().split(":");
+	             
+	             
+	             presentes.add(teste[0]);
+	             
+	             
+	             
 	             adapter.notifyDataSetChanged();
 	             
 	             return v;

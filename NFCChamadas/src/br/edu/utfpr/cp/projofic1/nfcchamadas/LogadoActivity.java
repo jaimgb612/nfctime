@@ -12,8 +12,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.Pessoa;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.util.ObjectSerializer;
 
@@ -61,7 +65,8 @@ public class LogadoActivity extends Activity {
 			// Preenchendo a lista
 			ListView eventosList = (ListView) findViewById(android.R.id.list);
 			eventosList.setAdapter(new EventosListAdapter(this, pessoaLoagada.getId()));
-
+			eventosList.setOnItemClickListener(listenerEvento);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			Log.e("Serializar POJO Pessoa", "Falha ao tentar serializar", e);
@@ -69,6 +74,19 @@ public class LogadoActivity extends Activity {
 
 
 	}
+	
+	OnItemClickListener listenerEvento = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+				long id) {
+			
+			Intent i = new Intent(LogadoActivity.this, NFCActivity.class);
+			i.putExtra("id_evento", id);
+			startActivity(i);
+			
+		}
+	};
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

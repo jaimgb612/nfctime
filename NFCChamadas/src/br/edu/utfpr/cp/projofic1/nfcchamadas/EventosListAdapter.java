@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.DatabaseDAO;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.Evento;
 
@@ -31,6 +32,7 @@ public class EventosListAdapter extends BaseAdapter {
 				DatabaseDAO dao = new DatabaseDAO();
 				return dao.getEventosDaPessoa(params[0]);
 			} catch (SQLException e) {
+				
 				return e;
 			}
 		}
@@ -39,7 +41,7 @@ public class EventosListAdapter extends BaseAdapter {
 		@Override
 		protected void onPostExecute(Object result) {
 			if (result instanceof SQLException) {
-				// Quando houve um problema na recuperação dos eventos no banco de dados
+				// Quando houve um problema na recuperaï¿½ï¿½o dos eventos no banco de dados
 				SQLException e = (SQLException) result;
 				Log.e("Query eventos", "Falha na query", e);
 				// Nova tentativa
@@ -116,7 +118,7 @@ public class EventosListAdapter extends BaseAdapter {
 		tv = (TextView) view.findViewById(R.id.tvEventoListItemData);
 		tv.setText(String.format(tv.getText().toString(), evento.getData()));
 		
-		// Escrevendo a hora de início e fim
+		// Escrevendo a hora de inï¿½cio e fim
 		tv = (TextView) view.findViewById(R.id.tvEventoListItemHoraInicoFim);
 		tv.setText(String.format(tv.getText().toString(), evento.getHoraInicio(), evento.getHoraFim()));
 		return view;
