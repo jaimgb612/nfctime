@@ -64,7 +64,7 @@
 		    </EditText>
 		
 		    <TextView
-		        android:id="@+id/textView3"
+		        android:id="@+id/txt_id_evento"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="@string/cadastrar_usuario_label_email"
@@ -78,7 +78,7 @@
 		        android:inputType="textEmailAddress" />
 		
 		    <TextView
-		        android:id="@+id/textView4"
+		        android:id="@+id/txtDescricao"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="@string/cadastrar_usuario_label_registro_academico"

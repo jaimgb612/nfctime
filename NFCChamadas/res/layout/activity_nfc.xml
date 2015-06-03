@@ -17,23 +17,41 @@
         android:layout_height="wrap_content"
         android:text="@string/lbl_nfc" />
 
+     <TextView
+         android:id="@+id/txtQtd"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+     />
+
+      <TextView
+          android:id="@+id/txtDescricao"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+      />
+
+    <TextView
+        android:id="@+id/txtEvento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_evento" />
+
+   
+
+    <TextView
+        android:id="@+id/txt_id_evento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/txtTeste"
+            android:id="@+id/txtTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/lbl_tagLida" />
-
-        <ListView
-            android:id="@+id/lstVPresente"
-            android:layout_width="214dp"
-            android:layout_height="49dp"
-            android:layout_weight="1" >
-        </ListView>
     </LinearLayout>
 
     <TextView
@@ -43,16 +61,24 @@
         android:text="@string/lbl_Lista_presentes"
         android:textSize="@dimen/Lista" />
 
-    <ListView
-        android:id="@+id/listPresentes"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="286dp" >
-    </ListView>
+        android:layout_height="241dp"
+        android:layout_weight="0.45"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/btnSalvar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/lbl_salvar" />
+        <ListView
+            android:id="@+id/listPresentes"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:layout_weight="0.64" >
+        </ListView>
+
+        <Button
+            android:id="@+id/btnSalvar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_salvar" />
+    </LinearLayout>
 
 </LinearLayout>
