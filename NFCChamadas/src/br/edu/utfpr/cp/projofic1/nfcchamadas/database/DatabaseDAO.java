@@ -4,11 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+
+import android.annotation.SuppressLint;
 
 
 public class DatabaseDAO {
@@ -84,7 +88,7 @@ public class DatabaseDAO {
 			result.close();
 			stmt.close();
 			
-			
+			return pessoa;
 		}
 		// Se n�o exisir, s� fecha a query do banco de dados e vai para a verifica��o por e-mail
 		result.close();
@@ -177,18 +181,72 @@ public class DatabaseDAO {
 		ResultSet result = stmt.executeQuery();
 		
 		// Preenchendo a lista com os resultados da consulta
+		fillEventosList(eventos, result);
+		
+		// Retornando a lista
+		return eventos;
+	}
+	
+	
+	@SuppressLint("SimpleDateFormat")
+	public List<Evento> getEventosDaPessoa(long pessoaId, Calendar startDia, Calendar endDia) throws SQLException {
+		List<Evento> eventos = new ArrayList<Evento>();
+		
+		// Fazendo a consulta no banco de dados
+		String sql = "SELECT * FROM evento WHERE id_criador_evento = ? AND data BETWEEN ? AND ?";
+		PreparedStatement stmt = dbConnection.prepareStatement(sql);
+		stmt.setString(1, String.valueOf(pessoaId));
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		stmt.setString(2, dateFormat.format(startDia.getTime()));
+		stmt.setString(3, dateFormat.format(endDia.getTime()));
+		ResultSet result = stmt.executeQuery();
+		
+		// Preenchendo a lista com os resultados da consulta
+		fillEventosList(eventos, result);
+		
+		// Retornando a lista
+		return eventos;
+	}
+
+
+	@SuppressLint("SimpleDateFormat")
+	public List<Evento> getEventosDaPessoa(long pessoaId, Calendar dia) throws SQLException {
+		List<Evento> eventos = new ArrayList<Evento>();
+
+		// Fazendo a consulta no banco de dados
+		String sql = "SELECT * FROM evento WHERE id_criador_evento = ? AND data = ?";
+		PreparedStatement stmt = dbConnection.prepareStatement(sql);
+		stmt.setLong(1, pessoaId);
+		stmt.setDate(2, new java.sql.Date(dia.getTimeInMillis()));
+		ResultSet result = stmt.executeQuery();
+
+		fillEventosList(eventos, result);
+
+		result.close();
+		stmt.close();
+		// Retornando a lista
+		return eventos;
+	}
+	
+	
+	private void fillEventosList(List<Evento> eventos, ResultSet result) throws SQLException {
 		while (result.next()) {
 			Evento evento = new Evento();
 			evento.setId(result.getLong("id_evento"));
 			evento.setNome(result.getString("nome"));
-			evento.setData(result.getString("data"));
-			evento.setHoraInicio(result.getString("hora_inicio"));
-			evento.setHoraFim(result.getString("hora_fim"));
-			evento.setIdCriadorEvento(result.getString("id_criador_evento"));
+			evento.setData(toCalendar(result.getDate("data")));
+			evento.setHoraInicio(toCalendar(result.getDate("hora_inicio")));
+			evento.setHoraFim(toCalendar(result.getDate("hora_fim")));
+			evento.setIdCriadorEvento(result.getLong("id_criador_evento"));
 			eventos.add(evento);
 		}
-		
-		// Retornando a lista
-		return eventos;
+	}
+
+
+	private Calendar toCalendar(java.sql.Date date) {
+		Calendar cal = Calendar.getInstance();
+		long time = date.getTime();
+		cal.setTimeInMillis(time);
+		return cal;
 	}
 }
