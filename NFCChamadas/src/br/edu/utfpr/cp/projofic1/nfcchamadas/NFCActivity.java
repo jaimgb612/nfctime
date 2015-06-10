@@ -252,3 +252,4 @@ public class NFCActivity extends Activity {
 	     
 	  
 
+txtTeste

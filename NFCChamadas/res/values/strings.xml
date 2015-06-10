@@ -48,5 +48,9 @@
    	<string name="mostrar_eventos_de_hoje">Mostrar\neventos\nde hoje</string>
    	<string name="do_dia">Do dia</string>
    	<string name="ao_dia">Ao dia</string>
+   		<string name="lbl_evento">Evento</string>
+   	<string name="lbl_qtd_aula">"Quantidade Aula: "</string>
+   	<string name="lbl_descricao">Descrição</string>
+   	<string name="lbl_qtd_aulas">"Qtd. Aulas: "</string>
 
 </resources>

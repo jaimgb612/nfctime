@@ -62,7 +62,7 @@ public class CadastrarUsuarioActivity extends Activity {
 		tiposPessoa.add(tipoPessoa);
 		spnTipoPessoa.setAdapter(new TiposPessoaSpinnerAdapter(this, tiposPessoa));
 		
-		// Criando os eventos dos botões
+		// Criando os eventos dos botï¿½es
 		bCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -89,7 +89,7 @@ public class CadastrarUsuarioActivity extends Activity {
 			protected String doInBackground(Void... params) {
 				String validar = validarCampos();
 				
-				// Se todos os campos são válidos
+				// Se todos os campos sï¿½o vï¿½lidos
 				if (validar == null) {
 					pessoa = new Pessoa();
 					pessoa.setNome(etNome.getText().toString().trim());
@@ -101,7 +101,7 @@ public class CadastrarUsuarioActivity extends Activity {
 						dbDAO.cadastrarPessoa(pessoa);
 					} catch (SQLException e) {
 						// Caso houve um problema ao cadastrar a pessoa na Base de Dados no servidor
-						Log.e("Conexão com o Banco de dados no servidor", "Falha ao cadastrar pessoa no Banco", e);
+						Log.e("Conexï¿½o com o Banco de dados no servidor", "Falha ao cadastrar pessoa no Banco", e);
 						return getResources().getString(R.string.falha_ao_cadastrar_usuario);
 					}
 					
@@ -121,7 +121,7 @@ public class CadastrarUsuarioActivity extends Activity {
 					Toast.makeText(CadastrarUsuarioActivity.this, result, Toast.LENGTH_SHORT).show();
 					
 				} else {
-					// Se foi um sucesso, termina a activity retornando os dados do novo usuário para fazer login
+					// Se foi um sucesso, termina a activity retornando os dados do novo usuï¿½rio para fazer login
 					Intent resultData = new Intent();
 					resultData.putExtra(RESULT_DATA_RACADEMICO, pessoa.getrAcademico());
 					resultData.putExtra(RESULT_DATA_SENHA, pessoa.getSenha());
@@ -148,7 +148,7 @@ public class CadastrarUsuarioActivity extends Activity {
 			return getResources().getString(R.string.cadastrar_usuario_validar_insira_email_valido);
 		}
 		
-		// Validando se inseriu um registro acadêmico
+		// Validando se inseriu um registro acadï¿½mico
 		if (etRAcademico.getText().toString().trim().equals(""))
 			return getResources().getString(R.string.cadastrar_usuario_validar_insira_registro_academico);
 		
@@ -164,7 +164,7 @@ public class CadastrarUsuarioActivity extends Activity {
 		if (spnTipoPessoa.getSelectedItemId() == Spinner.INVALID_ROW_ID)
 			return getResources().getString(R.string.cadastrar_usuario_validar_selecione_tipo_pessoa);
 		
-		// Se os campos estiverem válidos
+		// Se os campos estiverem vï¿½lidos
 		return null;
 	}
 	
@@ -175,7 +175,7 @@ public class CadastrarUsuarioActivity extends Activity {
 			if (dbDAO != null)
 				dbDAO.close();
 		} catch (SQLException e) {
-			Log.e("Conexão com o Banco de dados no servidor", "Falha ao fechar a conexão", e);
+			Log.e("Conexï¿½o com o Banco de dados no servidor", "Falha ao fechar a conexï¿½o", e);
 		}
 		super.onDestroy();
 	}
