@@ -6,12 +6,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import br.edu.utfpr.cp.projofic1.nfcchamada.daoLocal.presencaDAO;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.LoginActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -201,6 +203,49 @@ public class DatabaseDAO {
 		stmt.setLong(5, pessoa.getIdTipoPessoa());
 		stmt.execute();
 		stmt.close();
+
+	}
+	public void salvarPresenca(Chamada chamada, presencaDAO presenca) throws SQLException {
+		
+		
+		String sqlChamda = "INSERT INTO chamada (id_evento, nome_turma, qtd_aula) VALUES(?, ?, ?)";
+		
+		String sqlPresenca = "INSERT INTO presenca (chamada_id_chamada,chamada_id_evento, pessoa_id_pessoa) VALUES(?, ?, ?)";
+		
+		PreparedStatement stmt = dbConnection.prepareStatement(sqlChamda,Statement.RETURN_GENERATED_KEYS);
+		stmt.setLong(1,chamada.getId_evento());
+		stmt.setString(2, chamada.getDescricao());
+		stmt.setString(3, chamada.getQdtAula());
+		stmt.executeUpdate();
+		ResultSet rs = stmt.getGeneratedKeys();  
+		 
+		 int id = 0;  
+		  if(rs.next()){  
+		        id = rs.getInt(1);  
+		 }         
+		
+		PreparedStatement stmtP = dbConnection.prepareStatement(sqlPresenca);
+		List<Presenca> presentes = presenca.getByPresentesEvento(chamada);
+		
+		
+		
+		
+		
+		for(Presenca p : presentes){
+			
+			stmtP.setLong(1,id);
+			stmtP.setLong(2, chamada.getId_evento());
+			stmtP.setLong(3, p.getRa());
+			stmtP.executeUpdate();
+			
+			System.out.println("Salvando"+p.getNome()+"RA: "+p.getRa());
+		}
+		
+		stmtP.close();
+		
+		chamada.setId_chamada(id);
+		chamada.setQuantidade(presentes.size());
+		chamada.setGravado(1);
 
 	}
 	

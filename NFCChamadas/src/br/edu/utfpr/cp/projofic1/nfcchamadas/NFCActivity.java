@@ -1,44 +1,40 @@
 package br.edu.utfpr.cp.projofic1.nfcchamadas;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import java.util.List;
 
 import br.edu.utfpr.cp.projofic1.nfccahamdas.factory.NDEFRecordFactory;
 import br.edu.utfpr.cp.projofic1.nfcchamada.daoLocal.chamadaDAO;
 import br.edu.utfpr.cp.projofic1.nfcchamada.daoLocal.presencaDAO;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.Chamada;
+import br.edu.utfpr.cp.projofic1.nfcchamadas.database.DatabaseDAO;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.Presenca;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.model.BaseRecord;
-import br.edu.utfpr.cp.projofic1.nfcchamadas.model.RDTSpRecord;
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentFilter.MalformedMimeTypeException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,15 +50,18 @@ public class NFCActivity extends Activity {
 	PendingIntent nfcPendingIntent;
     IntentFilter[] intentFiltersArray;
 	private TextView recNumberTxt;
-    private ListView lView, lPresentes;
-    private List<Presenca> presentes;// = new ArrayList<Presenca>();
+    private ListView lPresentes;
+    private List<Presenca> presentes;
     ArrayAdapter<Presenca> adapter ;
     List<BaseRecord> dataList;
-    private presencaDAO presenca;
-	chamadaDAO chamadaDAO;
-	Chamada chamada;
-	int positionCorrent;
-    
+    int positionCorrent;
+	private Button salvar;
+	public Chamada chamada;
+	public DatabaseDAO dbDAO;
+	public presencaDAO presenca;
+	//public chamadaDAO chamadaDAO;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,7 +76,7 @@ public class NFCActivity extends Activity {
 		TextView txtEvento = (TextView) findViewById(R.id.txtEvento);
 		TextView txtQtd = (TextView) findViewById(R.id.txtQtd);
 		TextView txtDesc = (TextView) findViewById(R.id.txtDescricao);
-		
+		salvar =(Button) findViewById(R.id.btnSalvar);
 		
 	
 
@@ -123,12 +122,14 @@ public class NFCActivity extends Activity {
 		presenca = new presencaDAO(this);
 		
 		//monta lista de presentes 
-		
-		
-		
 		lPresentes.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		lPresentes.setTextFilterEnabled(true);
-		updateUI();
+		updateUI(); //Atualiza lista
+		
+		//Botão salvar
+		//if(presenca.getByPresentesEvento(chamada).size()>2){
+		salvar.setOnClickListener(listenerSalvar);
+		//}
 	
 	}
 
@@ -171,6 +172,69 @@ public class NFCActivity extends Activity {
 		}
 
 	}; 
+	
+	OnClickListener listenerSalvar = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			submit();
+			
+		}
+	};
+	
+	private void submit() {
+		final ProgressDialog progDial = ProgressDialog.show(NFCActivity.this, "", "");
+		progDial.setCancelable(false);
+		
+		new AsyncTask<Void, Void, String>() {
+			
+			
+			
+			@Override
+			protected String doInBackground(Void... params) {
+			
+				
+				try {
+					
+					
+					dbDAO = new DatabaseDAO();
+					dbDAO.salvarPresenca(chamada, presenca);
+					
+					
+					
+				} catch (SQLException e) {
+					// Caso houve um problema ao cadastrar a pessoa na Base de Dados no servidor
+					Log.e("Conex�o com o Banco de dados no servidor", "Falha ao cadastrar pessoa no Banco", e);
+					return getResources().getString(R.string.ERRO_SALVAR_PRESENCA);
+				}
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(String result) {
+				
+				super.onPostExecute(result);
+				
+				progDial.cancel();
+				
+				if (result != null) {
+					// Se houve algum problema
+					Toast.makeText(NFCActivity.this, result, Toast.LENGTH_SHORT).show();
+					
+				} else {
+					// Se foi um sucesso, termina a activity retornando os dados do novo usu�rio para fazer login
+					Intent resultData = new Intent();
+					
+					setResult(RESULT_OK, resultData);
+					finish();
+				}
+			}
+			
+			
+			
+		}.execute();
+		
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
