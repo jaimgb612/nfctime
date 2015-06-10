@@ -9,15 +9,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Calendar;
+import java.util.List;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-
+import java.text.SimpleDateFormat;
 import br.edu.utfpr.cp.projofic1.nfcchamada.daoLocal.presencaDAO;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.LoginActivity;
 import android.util.Log;
 import android.widget.Toast;
-
+import android.annotation.SuppressLint;
 
 public class DatabaseDAO {
 	
@@ -62,40 +63,14 @@ public class DatabaseDAO {
 	}
 	
 	
-	/**
-	 * @param emailRegAcademico
-	 * @param senha
-	 * @return Caso haja usu�rio ou senha inv�lida, retornar� <code>null</code>
-	 * @throws NoSuchAlgorithmException 
-	 */
+	
 	public Pessoa loginUsuario(String emailRegAcademico, String senha) throws SQLException {
 		// Verificando por registro acad�mico
 		// Pesquisando se existe um registro de matr�cula com este usu�rio e senha cadastrado
 		PreparedStatement stmt = dbConnection.prepareStatement(
 				"SELECT * FROM pessoa WHERE r_matricula = ? AND senha = ?");
-		/*
-		//Criptografia
-		String hash;
-		MessageDigest crip;
-		try {
-	
-		crip = MessageDigest.getInstance("SHA-256");
-	
-		crip.update(senha.getBytes());
-		
-		byte[] shaDig = crip.digest();
-		
-		hash = new String(bytesToHex(shaDig));
-		
-		Log.i("Eamorr", "result is " + hash);
-	
-		*/
-		
 		stmt.setString(1, emailRegAcademico);
 		stmt.setString(2, senha);
-		
-		
-		
 		ResultSet result = stmt.executeQuery();
 		Pessoa pessoa = null;
 		
@@ -114,7 +89,7 @@ public class DatabaseDAO {
 			result.close();
 			stmt.close();
 			
-			
+			return pessoa;
 		}
 		// Se n�o exisir, s� fecha a query do banco de dados e vai para a verifica��o por e-mail
 		result.close();
@@ -130,26 +105,9 @@ public class DatabaseDAO {
 			stmt = dbConnection.prepareStatement(
 					"SELECT * FROM pessoa WHERE email = ? AND senha = ?");
 			stmt.setString(1, emailRegAcademico);
-	/*		
-			//Criptografia
-			try {
-		
-			crip = MessageDigest.getInstance("SHA-256");
-		
-			crip.update(senha.getBytes());
-			
-			byte[] shaDig = crip.digest();
-			
-			hash = new String(bytesToHex(shaDig));
-			
-			Log.i("Eamorr", "result is " + hash);
-		
-		*/	
 			stmt.setString(2, senha);
-		
 			result = stmt.executeQuery();
-
-			
+		
 			if (result.next()) {
 				// Se existir, retorna o ID da pessoa para ser feito o login
 				
@@ -175,7 +133,6 @@ public class DatabaseDAO {
 			return null;
 		}
 	}
-	
 	
 	public void cadastrarPessoa(Pessoa pessoa) throws SQLException {
 		String sql = "INSERT INTO pessoa (nome, email, senha, r_matricula, id_tipo_pessoa) VALUES(?, ?, ?, ?, ?)";
@@ -248,7 +205,7 @@ public class DatabaseDAO {
 		chamada.setGravado(1);
 
 	}
-	
+
 	
 	/**
 	 * @param id
@@ -273,8 +230,7 @@ public class DatabaseDAO {
 		return null;
 	}
 	
-	
-	public List<Evento> getEventosDaPessoa(long pessoaId) throws SQLException {
+		public List<Evento> getEventosDaPessoa(long pessoaId) throws SQLException {
 		ArrayList<Evento> eventos = new ArrayList<Evento>();
 		
 		// Fazendo a consulta no banco de dados
@@ -284,25 +240,70 @@ public class DatabaseDAO {
 		ResultSet result = stmt.executeQuery();
 		
 		// Preenchendo a lista com os resultados da consulta
-		while (result.next()) {
-			Evento evento = new Evento();
-			evento.setId(result.getInt("id_evento"));
-			evento.setNome(result.getString("nome"));
-		//	evento.setData(result.getString("data"));
-			evento.setHoraInicio(result.getString("hora_inicio"));
-			evento.setHoraFim(result.getString("hora_fim"));
-			evento.setIdCriadorEvento(result.getString("id_criador_evento"));
-			eventos.add(evento);
-		}
+		fillEventosList(eventos, result);
 		
 		// Retornando a lista
 		return eventos;
 	}
 	
+	@SuppressLint("SimpleDateFormat")
+	public List<Evento> getEventosDaPessoa(long pessoaId, Calendar startDia, Calendar endDia) throws SQLException {
+		List<Evento> eventos = new ArrayList<Evento>();
+		
+		// Fazendo a consulta no banco de dados
+		String sql = "SELECT * FROM evento WHERE id_criador_evento = ? AND data BETWEEN ? AND ?";
+		PreparedStatement stmt = dbConnection.prepareStatement(sql);
+		stmt.setString(1, String.valueOf(pessoaId));
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		stmt.setString(2, dateFormat.format(startDia.getTime()));
+		stmt.setString(3, dateFormat.format(endDia.getTime()));
+		ResultSet result = stmt.executeQuery();
+		
+		// Preenchendo a lista com os resultados da consulta
+		fillEventosList(eventos, result);
+		
+		// Retornando a lista
+		return eventos;
+	}
+
+
+	@SuppressLint("SimpleDateFormat")
+	public List<Evento> getEventosDaPessoa(long pessoaId, Calendar dia) throws SQLException {
+		List<Evento> eventos = new ArrayList<Evento>();
+
+		// Fazendo a consulta no banco de dados
+		String sql = "SELECT * FROM evento WHERE id_criador_evento = ? AND data = ?";
+		PreparedStatement stmt = dbConnection.prepareStatement(sql);
+		stmt.setLong(1, pessoaId);
+		stmt.setDate(2, new java.sql.Date(dia.getTimeInMillis()));
+		ResultSet result = stmt.executeQuery();
+
+		fillEventosList(eventos, result);
+
+		result.close();
+		stmt.close();
+		// Retornando a lista
+		return eventos;
+	}
 	
-	 public static String bytesToHex(byte[] bytes) {
-	        StringBuffer result = new StringBuffer();
-	        for (byte byt : bytes) result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));
-	        return result.toString();
-	    }
+
+	private void fillEventosList(List<Evento> eventos, ResultSet result) throws SQLException {
+		while (result.next()) {
+			Evento evento = new Evento();
+			evento.setId(result.getLong("id_evento"));
+			evento.setNome(result.getString("nome"));
+			evento.setData(toCalendar(result.getDate("data")));
+			evento.setHoraInicio(toCalendar(result.getDate("hora_inicio")));
+			evento.setHoraFim(toCalendar(result.getDate("hora_fim")));
+			evento.setIdCriadorEvento(result.getLong("id_criador_evento"));
+			eventos.add(evento);
+		}
+	}
+
+	private Calendar toCalendar(java.sql.Date date) {
+		Calendar cal = Calendar.getInstance();
+		long time = date.getTime();
+		cal.setTimeInMillis(time);
+		return cal;
+	}
 }

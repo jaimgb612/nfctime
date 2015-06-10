@@ -1,11 +1,8 @@
 package br.edu.utfpr.cp.projofic1.nfcchamadas.database;
 
+import java.util.Calendar;
+
 import android.annotation.SuppressLint;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 
 @SuppressLint("SimpleDateFormat")
 public class Evento {
@@ -13,18 +10,18 @@ public class Evento {
 	public static final String HORA_FORMAT = "HH:mm"; // Baseado em 24 horas
 	public static final String DATA_FORMAT = "dd/MM/yyyy";
 	
-	private int id;
+	private long id, idCriadorEvento;
 	private String nome;
-	private Date data;
-	private String horaInicio, horaFim, idCriadorEvento;
+	private Calendar horaInicio, horaFim, data;
 	private boolean gravado;
 	
-	public int getId() {
+	
+	public long getId() {
 		return id;
 	}
 	
 	
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	
@@ -39,57 +36,51 @@ public class Evento {
 	}
 	
 	
-	public Date getData() {
+
+	public Calendar getData() {
 		return data;
 	}
 	
 	
-	public void setData(Date data) throws IllegalArgumentException {
+
+	public void setData(Calendar data) throws IllegalArgumentException {
 		// Primeiramente validando o formato da data
-		
 		this.data = data;
 	}
 	
 	
-	public String getHoraInicio() {
+	public Calendar getHoraInicio() {
 		return horaInicio;
 	}
 	
-	
-	public void setHoraInicio(String horaInicio) throws IllegalArgumentException {
-	
+
+	public void setHoraInicio(Calendar horaInicio) throws IllegalArgumentException {
 		this.horaInicio = horaInicio;
 	}
 	
 	
-	public String getHoraFim() {
+	public Calendar getHoraFim() {
 		return horaFim;
 	}
 	
 	
-	public void setHoraFim(String horaFim) throws IllegalArgumentException {
-		
+
+	public void setHoraFim(Calendar horaFim) throws IllegalArgumentException {
 		this.horaFim = horaFim;
 	}
 	
 	
-	public String getIdCriadorEvento() {
+	public long getIdCriadorEvento() {
 		return idCriadorEvento;
 	}
 	
 	
-	public void setIdCriadorEvento(String idCriadorEvento) {
+	public void setIdCriadorEvento(long idCriadorEvento) {
 		this.idCriadorEvento = idCriadorEvento;
 	}
 	
 	
-	private void validateHora(String hora) throws IllegalArgumentException {
-		
-	}
-
-
 	public boolean getGravado() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -102,4 +93,5 @@ public class Evento {
 	public void setGravado(boolean gravado) {
 		this.gravado = gravado;
 	}
+	
 }

@@ -106,7 +106,7 @@ public class CadastrarUsuarioActivity extends Activity {
 					}
 					
 				} else {
-					// Caso haja algum campo invï¿½lido
+					// Caso haja algum campo inválido
 					return validar;
 				}
 				return null;

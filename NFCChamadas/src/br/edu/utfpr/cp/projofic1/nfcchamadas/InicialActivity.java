@@ -18,9 +18,6 @@ public class InicialActivity extends Activity implements Runnable {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_inicial);
 		
-		
-        
-        
         Handler handler = new Handler();
         handler.postDelayed(this, 3000);
        

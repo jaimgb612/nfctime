@@ -4,19 +4,74 @@
     android:layout_height="match_parent"
     android:theme="@style/Theme.AppCompat.Light"
     tools:context=".LogadoActivity" >
-
-    <TextView
-        android:id="@+id/tvDadosUsuario"
-        android:layout_width="wrap_content"
+    
+    <TextView android:id="@+id/tvDadosUsuario"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:text="@string/hello_world" />
+        android:layout_alignParentTop="true" />
+    
+    <LinearLayout
+        android:id="@+id/layDia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvDadosUsuario"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/chboxHoje"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/mostrar_eventos_de_hoje" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/do_dia"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:id="@+id/bStartDia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="[startDia]" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ao_dia"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/bEndDia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="[endDia]" />
+            </LinearLayout>
+
+        </LinearLayout>
+        
+    </LinearLayout>
     
     <ListView android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tvDadosUsuario"
+        android:layout_below="@id/layDia"
         android:layout_alignParentLeft="true" />
 
 </RelativeLayout>

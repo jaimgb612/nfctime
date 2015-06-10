@@ -45,7 +45,10 @@
     <string name="evento_list_item_hora_inicio_fim" formatted="false">Das %s às %s</string>
     <string name="evento_list_item_data" formatted="false">Dia %s</string>
    	<string name="eventos_list_carregando_os_eventos">Carregando os eventos...</string>
-   	<string name="lbl_evento">Evento</string>
+   	<string name="mostrar_eventos_de_hoje">Mostrar\neventos\nde hoje</string>
+   	<string name="do_dia">Do dia</string>
+   	<string name="ao_dia">Ao dia</string>
+   		<string name="lbl_evento">Evento</string>
    	<string name="lbl_qtd_aula">"Quantidade Aula: "</string>
    	<string name="lbl_descricao">Descrição</string>
    	<string name="lbl_qtd_aulas">"Qtd. Aulas: "</string>
