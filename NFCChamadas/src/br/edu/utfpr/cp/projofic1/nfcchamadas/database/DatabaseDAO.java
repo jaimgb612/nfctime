@@ -8,15 +8,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import android.annotation.SuppressLint;
-import br.edu.utfpr.cp.projofic1.nfcchamadas.LoginActivity;
-import android.util.Log;
-import android.widget.Toast;
 
 public class DatabaseDAO {
 	
