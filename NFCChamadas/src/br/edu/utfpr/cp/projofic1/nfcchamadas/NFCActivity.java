@@ -1,26 +1,16 @@
 package br.edu.utfpr.cp.projofic1.nfcchamadas;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-
-import br.edu.utfpr.cp.projofic1.nfccahamdas.factory.NDEFRecordFactory;
-import br.edu.utfpr.cp.projofic1.nfcchamadas.model.BaseRecord;
-import br.edu.utfpr.cp.projofic1.nfcchamadas.model.RDTSpRecord;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentFilter.MalformedMimeTypeException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.Ndef;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -33,6 +23,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import br.edu.utfpr.cp.projofic1.nfccahamdas.factory.NDEFRecordFactory;
+import br.edu.utfpr.cp.projofic1.nfcchamadas.model.BaseRecord;
+import br.edu.utfpr.cp.projofic1.nfcchamadas.model.RDTSpRecord;
 
 public class NFCActivity extends Activity {
 	
