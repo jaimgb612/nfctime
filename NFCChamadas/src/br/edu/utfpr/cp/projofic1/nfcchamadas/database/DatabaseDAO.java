@@ -1,17 +1,23 @@
 package br.edu.utfpr.cp.projofic1.nfcchamadas.database;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Calendar;
 import java.util.List;
-
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-
+import java.text.SimpleDateFormat;
+import br.edu.utfpr.cp.projofic1.nfcchamada.daoLocal.presencaDAO;
+import br.edu.utfpr.cp.projofic1.nfcchamadas.LoginActivity;
+import android.util.Log;
+import android.widget.Toast;
 import android.annotation.SuppressLint;
 
 public class DatabaseDAO {
@@ -57,11 +63,7 @@ public class DatabaseDAO {
 	}
 	
 	
-	/**
-	 * @param emailRegAcademico
-	 * @param senha
-	 * @return Caso haja usu�rio ou senha inv�lida, retornar� <code>null</code>
-	 */
+	
 	public Pessoa loginUsuario(String emailRegAcademico, String senha) throws SQLException {
 		// Verificando por registro acad�mico
 		// Pesquisando se existe um registro de matr�cula com este usu�rio e senha cadastrado
@@ -132,19 +134,78 @@ public class DatabaseDAO {
 		}
 	}
 	
-	
 	public void cadastrarPessoa(Pessoa pessoa) throws SQLException {
 		String sql = "INSERT INTO pessoa (nome, email, senha, r_matricula, id_tipo_pessoa) VALUES(?, ?, ?, ?, ?)";
 		PreparedStatement stmt = dbConnection.prepareStatement(sql);
 		stmt.setString(1, pessoa.getNome());
 		stmt.setString(2, pessoa.getEmail());
-		stmt.setString(3, pessoa.getSenha());
+		/*
+		//Criptografia
+				String hash;
+				
+				try {
+					 MessageDigest md = MessageDigest.getInstance("SHA-256");
+			
+					  md.update(pessoa.getSenha().getBytes());
+				
+				hash = bytesToHex(md.digest());
+				
+				Log.i("Eamorr", "result is " + hash);
+		//fim criptografia	
+		 * 
+		 */
+	
+		stmt.setString(3,pessoa.getSenha());
 		stmt.setString(4, pessoa.getrAcademico());
 		stmt.setLong(5, pessoa.getIdTipoPessoa());
 		stmt.execute();
 		stmt.close();
+
 	}
-	
+	public void salvarPresenca(Chamada chamada, presencaDAO presenca) throws SQLException {
+		
+		
+		String sqlChamda = "INSERT INTO chamada (id_evento, nome_turma, qtd_aula) VALUES(?, ?, ?)";
+		
+		String sqlPresenca = "INSERT INTO presenca (chamada_id_chamada,chamada_id_evento, pessoa_id_pessoa) VALUES(?, ?, ?)";
+		
+		PreparedStatement stmt = dbConnection.prepareStatement(sqlChamda,Statement.RETURN_GENERATED_KEYS);
+		stmt.setLong(1,chamada.getId_evento());
+		stmt.setString(2, chamada.getDescricao());
+		stmt.setString(3, chamada.getQdtAula());
+		stmt.executeUpdate();
+		ResultSet rs = stmt.getGeneratedKeys();  
+		 
+		 int id = 0;  
+		  if(rs.next()){  
+		        id = rs.getInt(1);  
+		 }         
+		
+		PreparedStatement stmtP = dbConnection.prepareStatement(sqlPresenca);
+		List<Presenca> presentes = presenca.getByPresentesEvento(chamada);
+		
+		
+		
+		
+		
+		for(Presenca p : presentes){
+			
+			stmtP.setLong(1,id);
+			stmtP.setLong(2, chamada.getId_evento());
+			stmtP.setLong(3, p.getRa());
+			stmtP.executeUpdate();
+			
+			System.out.println("Salvando"+p.getNome()+"RA: "+p.getRa());
+		}
+		
+		stmtP.close();
+		
+		chamada.setId_chamada(id);
+		chamada.setQuantidade(presentes.size());
+		chamada.setGravado(1);
+
+	}
+
 	
 	/**
 	 * @param id
@@ -169,8 +230,7 @@ public class DatabaseDAO {
 		return null;
 	}
 	
-	
-	public List<Evento> getEventosDaPessoa(long pessoaId) throws SQLException {
+		public List<Evento> getEventosDaPessoa(long pessoaId) throws SQLException {
 		ArrayList<Evento> eventos = new ArrayList<Evento>();
 		
 		// Fazendo a consulta no banco de dados
@@ -185,7 +245,6 @@ public class DatabaseDAO {
 		// Retornando a lista
 		return eventos;
 	}
-	
 	
 	@SuppressLint("SimpleDateFormat")
 	public List<Evento> getEventosDaPessoa(long pessoaId, Calendar startDia, Calendar endDia) throws SQLException {
@@ -227,7 +286,7 @@ public class DatabaseDAO {
 		return eventos;
 	}
 	
-	
+
 	private void fillEventosList(List<Evento> eventos, ResultSet result) throws SQLException {
 		while (result.next()) {
 			Evento evento = new Evento();
@@ -240,7 +299,6 @@ public class DatabaseDAO {
 			eventos.add(evento);
 		}
 	}
-
 
 	private Calendar toCalendar(java.sql.Date date) {
 		Calendar cal = Calendar.getInstance();

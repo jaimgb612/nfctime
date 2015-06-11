@@ -1,6 +1,7 @@
 package br.edu.utfpr.cp.projofic1.nfcchamadas;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.DatabaseDAO;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.Evento;
 
@@ -32,7 +32,6 @@ public class EventosListAdapter extends BaseAdapter {
 				DatabaseDAO dao = new DatabaseDAO();
 				return dao.getEventosDaPessoa(params[0]);
 			} catch (SQLException e) {
-				
 				return e;
 			}
 		}
@@ -115,12 +114,17 @@ public class EventosListAdapter extends BaseAdapter {
 		tv.setText(evento.getNome());
 		
 		// Escrevendo a data
+	
+		
 		tv = (TextView) view.findViewById(R.id.tvEventoListItemData);
-		tv.setText(String.format(tv.getText().toString(), evento.getData()));
+		tv.setText(String.format(tv.getText().toString(), 
+				new SimpleDateFormat("dd/MM/yyyy").format(evento.getData().getTime())  ));
+		
 		
 		// Escrevendo a hora de in�cio e fim
 		tv = (TextView) view.findViewById(R.id.tvEventoListItemHoraInicoFim);
-		tv.setText(String.format(tv.getText().toString(), evento.getHoraInicio(), evento.getHoraFim()));
+		tv.setText(String.format(tv.getText().toString(),   new SimpleDateFormat("HH:mm").format(evento.getHoraInicio().getTime()), 
+				new SimpleDateFormat("HH:mm").format(evento.getHoraFim().getTime())));
 		return view;
 	}
 
