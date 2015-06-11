@@ -41,14 +41,15 @@ public class chamadaDAO {
 		ContentValues values = new ContentValues();
 		
 		values.put("id_evento", i.getId_evento());
-		values.put("descricao", i.getDescricao());
+		values.put("descricao", i.getDescricao().toString());
 		values.put("qtd_aula", i.getQdtAula());
-
+		values.put("gravado", 1);
+		values.put("total_integrante", i.getQuantidade());
 		
-		
-		long generatedId =mDatabase.insert(DBHelper.TABLE_CHAMADA, null, values);
-		
-		i.setId_chamada(generatedId);
+		System.out.println(values);
+		System.out.println("Chamdas"+i);
+		long idPresencaAluno = mDatabase.insert(DBHelper.TABLE_CHAMADA, null, values);
+		i.setId_chamada(idPresencaAluno);
 		
 	}
 	
@@ -65,7 +66,9 @@ public class chamadaDAO {
 					chamada.setId_evento(cursor.getLong(1));
 					chamada.setDescricao(cursor.getString(2));
 					chamada.setQdtAula(cursor.getString(3));
-					
+					chamada.setGravado(cursor.getInt(4));
+					chamada.setQuantidade(cursor.getInt(5));
+					System.out.println(chamada);
 					return chamada;
 				}
 				cursor.close();		

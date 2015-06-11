@@ -38,7 +38,7 @@ public static final String SQL_CREATE_TABLE_CHAMADA = "CREATE TABLE " + TABLE_CH
 			+ "id_evento INTEGER NOT NULL,"
 			+ "descricao TEXT, "
 			+ "qtd_aula TEXT,"
-			+ "gravado INTEGER(2),"
+			+ "gravado INTEGER,"
 			+ "total_integrante INTEGER);";
 	
 public static final String SQL_CREATE_TABLE_PRESENCA = "CREATE TABLE " + TABLE_PRESENCA + "("

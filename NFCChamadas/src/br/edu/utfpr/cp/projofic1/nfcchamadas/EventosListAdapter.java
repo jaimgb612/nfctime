@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import br.edu.utfpr.cp.projofic1.nfcchamada.daoLocal.chamadaDAO;
+import br.edu.utfpr.cp.projofic1.nfcchamadas.database.Chamada;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.DatabaseDAO;
 import br.edu.utfpr.cp.projofic1.nfcchamadas.database.Evento;
 
@@ -104,8 +106,8 @@ public class EventosListAdapter extends BaseAdapter {
 			tvCarregando.setText(R.string.eventos_list_carregando_os_eventos);
 			return tvCarregando;
 		}
-		
 		Evento evento = getItem(position);
+		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.evento_list_item, null);
 		
@@ -117,6 +119,7 @@ public class EventosListAdapter extends BaseAdapter {
 	
 		
 		tv = (TextView) view.findViewById(R.id.tvEventoListItemData);
+	
 		tv.setText(String.format(tv.getText().toString(), 
 				new SimpleDateFormat("dd/MM/yyyy").format(evento.getData().getTime())  ));
 		
@@ -125,6 +128,26 @@ public class EventosListAdapter extends BaseAdapter {
 		tv = (TextView) view.findViewById(R.id.tvEventoListItemHoraInicoFim);
 		tv.setText(String.format(tv.getText().toString(),   new SimpleDateFormat("HH:mm").format(evento.getHoraInicio().getTime()), 
 				new SimpleDateFormat("HH:mm").format(evento.getHoraFim().getTime())));
+		
+		
+		//STATUS DA CHAMADA
+		TextView tvTeste = (TextView) view.findViewById(R.id.tvTeste); 
+		chamadaDAO chaDAO = new chamadaDAO(context);
+		
+		Chamada chamada = chaDAO.getChamada(evento.getId());
+		if(chamada!=null){
+		
+			if(chamada.getGravado() ==1){
+				view.setBackgroundColor(Color.parseColor("#64B5F6"));;
+				tvTeste.setText("Status Chamada: Realizado ! ");
+			}
+			
+		
+		}else{
+				view.setBackgroundColor(Color.parseColor("#FFF176"));;
+				tvTeste.setText("Status Chamada: Não Realizado ! ");
+		}
+		
 		return view;
 	}
 

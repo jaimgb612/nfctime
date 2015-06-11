@@ -34,4 +34,13 @@
         android:text="@string/evento_list_item_hora_inicio_fim"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
+     <TextView
+         android:id="@+id/tvTeste"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_below="@+id/tvEventoListItemHoraInicoFim"
+         android:layout_marginTop="14dp"
+         android:textStyle="italic" />
+
 </RelativeLayout>

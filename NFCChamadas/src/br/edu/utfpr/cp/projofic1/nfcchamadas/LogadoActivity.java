@@ -135,7 +135,7 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 				builder.setView(promptsView);
 				builder.setNegativeButton("Não", null);
 				builder.setTitle("Chamada");
-				builder.setPositiveButton("Sim",  new DialogInterface.OnClickListener(){
+				builder.setPositiveButton("Abrir",  new DialogInterface.OnClickListener(){
 	
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
@@ -159,7 +159,14 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 	
 				builder.create().show();
 				
-			}else{
+			}else if(chamada.getGravado()==1){
+				Builder builder = new Builder(LogadoActivity.this);
+				builder.setTitle("Chamada já realizada");
+				builder.setMessage("Chamada realizada para esse evento !");
+				builder.setNegativeButton("Ok! ",null);
+				builder.create().show();
+			}
+			else{
 				Intent i = new Intent(LogadoActivity.this, NFCActivity.class);
 				i.putExtra("chamada", chamada);
 				startActivityForResult(i, ID_ACTIVITY_LOGADO);
@@ -178,7 +185,7 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 	    return super.onCreateOptionsMenu(menu);
 	}
 
-	/*
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
@@ -193,7 +200,7 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 			return super.onOptionsItemSelected(item);
 		}
 	}
-   */
+  
 	
 	//Só para teste !!!!!
 	private void openCaptura() {

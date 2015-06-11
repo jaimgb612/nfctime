@@ -3,7 +3,6 @@ package br.edu.utfpr.cp.projofic1.nfcchamadas;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import java.util.List;
 
 import br.edu.utfpr.cp.projofic1.nfccahamdas.factory.NDEFRecordFactory;
@@ -17,6 +16,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -59,7 +59,8 @@ public class NFCActivity extends Activity {
 	public Chamada chamada;
 	public DatabaseDAO dbDAO;
 	public presencaDAO presenca;
-	//public chamadaDAO chamadaDAO;
+	public chamadaDAO chamadaDAO;
+	private Context context;
 	
 	
 	@Override
@@ -78,7 +79,7 @@ public class NFCActivity extends Activity {
 		TextView txtDesc = (TextView) findViewById(R.id.txtDescricao);
 		salvar =(Button) findViewById(R.id.btnSalvar);
 		
-	
+		context = this;
 
 		
 		if (nfc == null || !(nfc.isEnabled())) {
@@ -198,8 +199,9 @@ public class NFCActivity extends Activity {
 					
 					
 					dbDAO = new DatabaseDAO();
-					dbDAO.salvarPresenca(chamada, presenca);
-					
+					chamadaDAO = new chamadaDAO(context);
+					chamada = dbDAO.salvarPresenca(chamada, presenca);
+					chamadaDAO.save(chamada);
 					
 					
 				} catch (SQLException e) {

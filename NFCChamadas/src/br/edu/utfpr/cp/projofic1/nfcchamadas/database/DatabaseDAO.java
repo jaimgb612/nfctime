@@ -139,21 +139,6 @@ public class DatabaseDAO {
 		PreparedStatement stmt = dbConnection.prepareStatement(sql);
 		stmt.setString(1, pessoa.getNome());
 		stmt.setString(2, pessoa.getEmail());
-		/*
-		//Criptografia
-				String hash;
-				
-				try {
-					 MessageDigest md = MessageDigest.getInstance("SHA-256");
-			
-					  md.update(pessoa.getSenha().getBytes());
-				
-				hash = bytesToHex(md.digest());
-				
-				Log.i("Eamorr", "result is " + hash);
-		//fim criptografia	
-		 * 
-		 */
 	
 		stmt.setString(3,pessoa.getSenha());
 		stmt.setString(4, pessoa.getrAcademico());
@@ -162,17 +147,20 @@ public class DatabaseDAO {
 		stmt.close();
 
 	}
-	public void salvarPresenca(Chamada chamada, presencaDAO presenca) throws SQLException {
+	public Chamada salvarPresenca(Chamada chamada, presencaDAO presenca) throws SQLException {
 		
 		
-		String sqlChamda = "INSERT INTO chamada (id_evento, nome_turma, qtd_aula) VALUES(?, ?, ?)";
+		String sqlChamda = "INSERT INTO chamada (id_evento, nome_turma, qtd_aula, quantidade_aluno, realizada) VALUES(?, ?, ?, ?,?)";
 		
 		String sqlPresenca = "INSERT INTO presenca (chamada_id_chamada,chamada_id_evento, pessoa_id_pessoa) VALUES(?, ?, ?)";
+		List<Presenca> presentes = presenca.getByPresentesEvento(chamada);
 		
 		PreparedStatement stmt = dbConnection.prepareStatement(sqlChamda,Statement.RETURN_GENERATED_KEYS);
 		stmt.setLong(1,chamada.getId_evento());
 		stmt.setString(2, chamada.getDescricao());
 		stmt.setString(3, chamada.getQdtAula());
+		stmt.setInt(4, presentes.size());
+		stmt.setInt(5, 1);
 		stmt.executeUpdate();
 		ResultSet rs = stmt.getGeneratedKeys();  
 		 
@@ -182,7 +170,6 @@ public class DatabaseDAO {
 		 }         
 		
 		PreparedStatement stmtP = dbConnection.prepareStatement(sqlPresenca);
-		List<Presenca> presentes = presenca.getByPresentesEvento(chamada);
 		
 		
 		
@@ -203,6 +190,8 @@ public class DatabaseDAO {
 		chamada.setId_chamada(id);
 		chamada.setQuantidade(presentes.size());
 		chamada.setGravado(1);
+		
+		return chamada;
 
 	}
 
