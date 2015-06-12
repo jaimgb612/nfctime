@@ -1,24 +1,19 @@
 package br.edu.utfpr.cp.projofic1.nfcchamadas.database;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Calendar;
 import java.util.List;
+
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import java.text.SimpleDateFormat;
-import br.edu.utfpr.cp.projofic1.nfcchamada.daoLocal.presencaDAO;
-import br.edu.utfpr.cp.projofic1.nfcchamadas.LoginActivity;
-import android.util.Log;
-import android.widget.Toast;
+
 import android.annotation.SuppressLint;
+import br.edu.utfpr.cp.projofic1.nfcchamada.daoLocal.presencaDAO;
 
 public class DatabaseDAO {
 	
@@ -254,9 +249,8 @@ public class DatabaseDAO {
 		String sql = "SELECT * FROM evento WHERE id_criador_evento = ? AND data BETWEEN ? AND ?";
 		PreparedStatement stmt = dbConnection.prepareStatement(sql);
 		stmt.setString(1, String.valueOf(pessoaId));
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		stmt.setString(2, dateFormat.format(startDia.getTime()));
-		stmt.setString(3, dateFormat.format(endDia.getTime()));
+		stmt.setDate(2, new java.sql.Date(startDia.getTimeInMillis()));
+		stmt.setDate(3, new java.sql.Date(endDia.getTimeInMillis()));
 		ResultSet result = stmt.executeQuery();
 		
 		// Preenchendo a lista com os resultados da consulta
