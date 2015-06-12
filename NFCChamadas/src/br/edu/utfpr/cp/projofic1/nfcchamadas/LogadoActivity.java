@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -99,7 +98,8 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 			chkboxHoje.setOnCheckedChangeListener(this);
 			chkboxHoje.setChecked(true);
 			
-			String currentDate = dateFormat.format((startDia = endDia = Calendar.getInstance()).getTime());
+			startDia = Calendar.getInstance();
+			String currentDate = dateFormat.format((endDia = Calendar.getInstance()).getTime());
 			bStartDia.setText(currentDate);
 			bEndDia.setText(currentDate);
 
@@ -238,7 +238,7 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 					// Atualizando a lista
 					ListView eventosList = (ListView) LogadoActivity.this.findViewById(android.R.id.list);
 					EventosListAdapter listAdapter = (EventosListAdapter) eventosList.getAdapter();
-			//		listAdapter.setIntervaloDiaAndUpdate(startDia, endDia);
+					listAdapter.changeDate(startDia, endDia);
 
 					// Atualizando os bot�es com as novas datas
 					bStartDia.setText(dateFormat.format(startDia.getTime()));
@@ -257,11 +257,11 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 		if (isChecked) {
 			bStartDia.setEnabled(false);
 			bEndDia.setEnabled(false);
-		//	adapter.updateEventosComDiaAtual();
+			adapter.setEventosDeHoje();
 		} else {
 			bStartDia.setEnabled(true);
 			bEndDia.setEnabled(true);
-			//adapter.setIntervaloDiaAndUpdate(startDia, endDia);
+			adapter.changeDate(startDia, endDia);
 		}
 	}
 	

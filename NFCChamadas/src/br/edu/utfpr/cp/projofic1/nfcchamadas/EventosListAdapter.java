@@ -2,12 +2,14 @@ package br.edu.utfpr.cp.projofic1.nfcchamadas;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +28,23 @@ public class EventosListAdapter extends BaseAdapter {
 	private List<Evento> eventos;
 	private long pessoaId;
 	
-	private AsyncTask<Long, Void, Object> queryEventosTask = new AsyncTask<Long, Void, Object>() {
+	private boolean rerun = false, running = false;
+	
+	private Calendar startData, endData;
+	
+	private class QueryEventosTask extends AsyncTask<Long, Void, Object> {
 		
 		@Override
 		protected Object doInBackground(Long... params) {
+			running = true;
+			rerun = false;
 			try {
 				DatabaseDAO dao = new DatabaseDAO();
-				return dao.getEventosDaPessoa(params[0]);
+				// Eventos de hoje
+				if (endData == null)
+					return dao.getEventosDaPessoa(params[0], startData);
+				// Eventos invervalo de dias
+				return dao.getEventosDaPessoa(params[0], startData, endData);
 			} catch (SQLException e) {
 				return e;
 			}
@@ -46,12 +58,22 @@ public class EventosListAdapter extends BaseAdapter {
 				SQLException e = (SQLException) result;
 				Log.e("Query eventos", "Falha na query", e);
 				// Nova tentativa
-				this.execute(pessoaId);
+				rerun = true;
 			} else if (result instanceof List<?>) {
 				// Mandando atualizar a lista
 				eventos = (List<Evento>) result;
+				//Log.d("Hora", eventos.get(0).getHoraInicio().toString());
 				EventosListAdapter.this.notifyDataSetChanged();
 			}
+			if (rerun)
+				new Handler().post(new Runnable() {
+					@Override
+					public void run() {
+						new QueryEventosTask().execute(pessoaId);
+					}
+				});
+			else
+				running = false;
 		};
 	};
 	
@@ -59,7 +81,21 @@ public class EventosListAdapter extends BaseAdapter {
 	public EventosListAdapter(Context context, long pessoaId) {
 		this.context = context;
 		this.pessoaId = pessoaId;
-		queryEventosTask.execute(pessoaId);
+		setEventosDeHoje();
+	}
+	
+	
+	public void changeDate(Calendar startData, Calendar endData) {
+		this.startData = startData;
+		this.endData = endData;
+		requestEventosUpdate();
+	}
+	
+	
+	public void setEventosDeHoje() {
+		this.startData = Calendar.getInstance();
+		this.endData = null;
+		requestEventosUpdate();
 	}
 	
 	
@@ -69,7 +105,10 @@ public class EventosListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 		
 		// Requesitando a query
-		queryEventosTask.execute(pessoaId);
+		if (running)
+			rerun = true;
+		else
+			new QueryEventosTask().execute(pessoaId);
 	}
 	
 	
