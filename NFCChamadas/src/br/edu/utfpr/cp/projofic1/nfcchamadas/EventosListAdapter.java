@@ -127,7 +127,7 @@ public class EventosListAdapter extends BaseAdapter {
 		// Escrevendo a hora de in�cio e fim
 		tv = (TextView) view.findViewById(R.id.tvEventoListItemHoraInicoFim);
 		tv.setText(String.format(tv.getText().toString(),   new SimpleDateFormat("HH:mm").format(evento.getHoraInicio().getTime()), 
-				new SimpleDateFormat("HH:mm").format(evento.getHoraFim().getTime())));
+				new SimpleDateFormat("HH:mm").format(evento.getHoraFim())));
 		
 		
 		//STATUS DA CHAMADA
@@ -139,7 +139,10 @@ public class EventosListAdapter extends BaseAdapter {
 		
 			if(chamada.getGravado() ==1){
 				view.setBackgroundColor(Color.parseColor("#64B5F6"));;
-				tvTeste.setText("Status Chamada: Realizado ! ");
+				tvTeste.setText("Status Chamada: Realizado ! "+chamada.getGravado());
+			}else{
+				view.setBackgroundColor(Color.parseColor("#FF7043"));;
+				tvTeste.setText("Status Chamada: Não concluida ! ");
 			}
 			
 		

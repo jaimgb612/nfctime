@@ -146,6 +146,7 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 						chamada.setDescricao(descricao.getText().toString());
 						chamada.setId_evento(id_evento);
 						chamada.setQdtAula(qtdAula.getText().toString());
+						chamada.setGravado(0);
 						i.putExtra("chamada", chamada);
 						
 						chDAO.save(chamada);
@@ -265,6 +266,15 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 	}
 	
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == ID_ACTIVITY_LOGADO && resultCode == RESULT_OK) {
+			if(data != null)
+			chamada =(Chamada) data.getSerializableExtra("chamada");
+		}
+	}
+
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

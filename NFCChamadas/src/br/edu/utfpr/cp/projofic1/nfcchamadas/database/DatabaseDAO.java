@@ -171,10 +171,6 @@ public class DatabaseDAO {
 		
 		PreparedStatement stmtP = dbConnection.prepareStatement(sqlPresenca);
 		
-		
-		
-		
-		
 		for(Presenca p : presentes){
 			
 			stmtP.setLong(1,id);

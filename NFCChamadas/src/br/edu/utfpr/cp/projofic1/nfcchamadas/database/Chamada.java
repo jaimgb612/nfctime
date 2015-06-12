@@ -16,7 +16,7 @@ public class Chamada implements Serializable {
 	private String qdtAula;
 	private List<Presenca> presenca;
 	private int quantidade;
-	private int gravado;
+	private int gravado=0;
 	
 	public long getId_evento() {
 		return id_evento;

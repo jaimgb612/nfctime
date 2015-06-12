@@ -201,7 +201,7 @@ public class NFCActivity extends Activity {
 					dbDAO = new DatabaseDAO();
 					chamadaDAO = new chamadaDAO(context);
 					chamada = dbDAO.salvarPresenca(chamada, presenca);
-					chamadaDAO.save(chamada);
+				
 					
 					
 				} catch (SQLException e) {
@@ -226,7 +226,7 @@ public class NFCActivity extends Activity {
 				} else {
 					// Se foi um sucesso, termina a activity retornando os dados do novo usu�rio para fazer login
 					Intent resultData = new Intent();
-					
+					resultData.putExtra("chamada", chamada);
 					setResult(RESULT_OK, resultData);
 					finish();
 				}
@@ -358,89 +358,10 @@ public class NFCActivity extends Activity {
 	   	             adapter.notifyDataSetChanged();
 	                }
 	            }
-	          //  System.out.println(presenca.getPresente());
-//	           NdefAdapter adpt = new NdefAdapter(dataList);
-	//           lView.setAdapter(adpt);
-	 //          adpt.notifyDataSetChanged();
+
 	        }
 
 	    }
-	
-	 // ListView adapter]
-	 /*
-	    class NdefAdapter extends ArrayAdapter<BaseRecord> {
-	    	
-	    	 List<BaseRecord> recordList;
-	    	 
-	    	 public NdefAdapter(List<BaseRecord> recordList) {
-	             super(NFCActivity.this, R.layout.record_layout, recordList);
-	             this.recordList = recordList;
-	         }
-	    	 
-	    	 @Override
-	         public int getCount() {
-	             return recordList.size();
-	         }
-
-	         @Override
-	         public BaseRecord getItem(int position) {
-	             return recordList.get(position);
-	         }
-	         
-	         @Override
-	         public View getView(int position, View convertView, ViewGroup parent) {
-	             View v = convertView;
-	             Log.d("Nfc","Get VIew");
-	             if (v == null) {
-	                 LayoutInflater inf = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	                 v = inf.inflate(R.layout.record_layout, null);
-	             }
-
-	             TextView tnfTxt = (TextView) v.findViewById(R.id.tnfText);
-	             TextView recContentTxT = (TextView) v.findViewById(R.id.recCont);
-	             TextView typeTxt = (TextView) v.findViewById(R.id.typeTxt);
-	             
-	             BaseRecord record = recordList.get(position);
-	             tnfTxt.setText("" + record.tnf);
-	          
-	             recContentTxT.setText(record.toString());
-	             
-	             try{
-	             String[] teste = record.payload.toString().split(":");
-	             
-	             
-	             presentes.add(teste[0] +":"+teste[1]);
-	             
-	             
-	             presenca.setPresente(Integer.parseInt(teste[0]));
-	             }catch(Exception e){
-	            	 
-	            	 try{
-	            	 String[] teste1 = record.payload.toString().split(" ");
-	            	 presentes.add(teste1[0] +": "+teste1[1]);
-	            	 presenca.setPresente(Integer.parseInt(teste1[0]));
-	            	 }catch(Exception ex){
-	            	 
-	            	 Toast.makeText(NFCActivity.this, "Tag fora do formato padrão !", Toast.LENGTH_LONG).show();
-	            
-	            	 }
-	             }
-	             
-	             adapter.notifyDataSetChanged();
-	             
-	             return v;
-
-	         }
-	         
-	         @Override
-	         public long getItemId(int position) {
-	             return recordList.get(position).hashCode();
-	         }
-
-
-	    }
-  
-	 */
 }
 	     
 
