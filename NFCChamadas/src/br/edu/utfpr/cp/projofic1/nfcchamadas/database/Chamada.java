@@ -60,6 +60,13 @@ public class Chamada implements Serializable {
 	public void setGravado(int gravado) {
 		this.gravado = gravado;
 	}
+	@Override
+	public String toString() {
+		return "Chamada [id_chamada=" + id_chamada + ", id_evento=" + id_evento
+				+ ", descricao=" + descricao + ", qdtAula=" + qdtAula
+				+ ", presenca=" + presenca + ", quantidade=" + quantidade
+				+ ", gravado=" + gravado + "]";
+	}
 	
 	
 	

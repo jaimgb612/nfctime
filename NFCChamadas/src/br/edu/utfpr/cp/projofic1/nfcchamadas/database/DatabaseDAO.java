@@ -180,7 +180,7 @@ public class DatabaseDAO {
 		
 		chamada.setId_chamada(id);
 		chamada.setQuantidade(presentes.size());
-		chamada.setGravado(1);
+		
 		
 		return chamada;
 

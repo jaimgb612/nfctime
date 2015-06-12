@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -146,10 +147,11 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 						chamada.setDescricao(descricao.getText().toString());
 						chamada.setId_evento(id_evento);
 						chamada.setQdtAula(qtdAula.getText().toString());
-						chamada.setGravado(0);
+						chamada.setGravado(1);
+						chDAO.save(chamada);
 						i.putExtra("chamada", chamada);
 						
-						chDAO.save(chamada);
+					
 						startActivityForResult(i, ID_ACTIVITY_LOGADO);
 						
 					}
@@ -160,7 +162,7 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 	
 				builder.create().show();
 				
-			}else if(chamada.getGravado()==1){
+			}else if(chamada.getGravado()==2){
 				Builder builder = new Builder(LogadoActivity.this);
 				builder.setTitle("Chamada já realizada");
 				builder.setMessage("Chamada realizada para esse evento !");
@@ -268,9 +270,16 @@ public class LogadoActivity extends Activity implements OnClickListener, OnCheck
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(requestCode == ID_ACTIVITY_LOGADO && resultCode == RESULT_OK) {
+		if( resultCode == RESULT_OK) {
 			if(data != null)
 			chamada =(Chamada) data.getSerializableExtra("chamada");
+			chamada.setGravado(2);
+			chDAO.upgrade(chamada);
+			ListView list = (ListView) findViewById(android.R.id.list);
+			EventosListAdapter adapter = (EventosListAdapter) list.getAdapter();
+			adapter.notifyDataSetChanged();
+			System.err.println("Aeee volteou e SALVOUUUUUU");
+			
 		}
 	}
 

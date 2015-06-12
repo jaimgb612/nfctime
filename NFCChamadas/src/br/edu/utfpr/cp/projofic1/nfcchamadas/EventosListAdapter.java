@@ -165,8 +165,8 @@ public class EventosListAdapter extends BaseAdapter {
 		
 		// Escrevendo a hora de in�cio e fim
 		tv = (TextView) view.findViewById(R.id.tvEventoListItemHoraInicoFim);
-		tv.setText(String.format(tv.getText().toString(),   new SimpleDateFormat("HH:mm").format(evento.getHoraInicio().getTime()), 
-				new SimpleDateFormat("HH:mm").format(evento.getHoraFim())));
+		tv.setText(String.format(tv.getText().toString(),   new SimpleDateFormat("hh:mm:ss").format(evento.getHoraInicio().getTime()), 
+				new SimpleDateFormat("hh:mm").format(evento.getHoraFim().getTime())));
 		
 		
 		//STATUS DA CHAMADA
@@ -174,20 +174,21 @@ public class EventosListAdapter extends BaseAdapter {
 		chamadaDAO chaDAO = new chamadaDAO(context);
 		
 		Chamada chamada = chaDAO.getChamada(evento.getId());
+		System.out.println(chamada);
 		if(chamada!=null){
 		
-			if(chamada.getGravado() ==1){
+			if(chamada.getGravado() ==2){
 				view.setBackgroundColor(Color.parseColor("#64B5F6"));;
-				tvTeste.setText("Status Chamada: Realizado ! "+chamada.getGravado());
+				tvTeste.setText("Status Chamada: Realizado !");
 			}else{
 				view.setBackgroundColor(Color.parseColor("#FF7043"));;
-				tvTeste.setText("Status Chamada: Não concluida ! ");
+				tvTeste.setText("Status Chamada: Não concluida !");
 			}
 			
 		
 		}else{
 				view.setBackgroundColor(Color.parseColor("#FFF176"));;
-				tvTeste.setText("Status Chamada: Não Realizado ! ");
+				tvTeste.setText("Status Chamada: Não Realizado !");
 		}
 		
 		return view;

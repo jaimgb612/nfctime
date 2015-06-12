@@ -201,7 +201,7 @@ public class NFCActivity extends Activity {
 					dbDAO = new DatabaseDAO();
 					chamadaDAO = new chamadaDAO(context);
 					chamada = dbDAO.salvarPresenca(chamada, presenca);
-				
+					chamada.setGravado(2);
 					
 					
 				} catch (SQLException e) {
@@ -293,7 +293,14 @@ public class NFCActivity extends Activity {
 
 	}
 	
-	 private void getTag(Intent i) {
+	/*
+	 @Override
+	public void onBackPressed() {
+
+		Toast.makeText(getApplicationContext(), "Chamada não terminada, para sair grave a chamada!", Toast.LENGTH_LONG);
+	}
+	*/
+	private void getTag(Intent i) {
 	        if (i == null)
 	            return ;
 

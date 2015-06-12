@@ -43,7 +43,7 @@ public class chamadaDAO {
 		values.put("id_evento", i.getId_evento());
 		values.put("descricao", i.getDescricao().toString());
 		values.put("qtd_aula", i.getQdtAula());
-		values.put("gravado", 1);
+		values.put("gravado", i.getGravado());
 		values.put("total_integrante", i.getQuantidade());
 		
 		System.out.println(values);
@@ -52,7 +52,14 @@ public class chamadaDAO {
 		i.setId_chamada(idPresencaAluno);
 		
 	}
+	public void upgrade(Chamada i){
+		ContentValues values = new ContentValues();
+		
+		values.put("gravado", i.getGravado());
+		mDatabase.update(DBHelper.TABLE_CHAMADA, values, "id_evento = " + i.getId_evento(), null);
 	
+		
+	}
 	public Chamada getChamada(long id_evento){
 		
 		
